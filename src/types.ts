@@ -98,11 +98,34 @@ export interface ClientItem {
   highlight: string;
   tags: string[];
   deliverables: string[];
+  status?: 'Live' | 'Completed' | 'In Development' | 'Maintenance';
+  featuredOnHome?: boolean;
+  completionDate?: string;
+  clientContactPhone?: string;
+  clientContactEmail?: string;
   metrics?: {
     label: string;
     value: string;
   }[];
 }
+
+export interface LeadItem {
+  id: string;
+  name: string;
+  companyName?: string;
+  phoneNumber: string;
+  emailAddress: string;
+  serviceRequired: string;
+  estimatedBudget?: string;
+  projectDescription: string;
+  source: 'Contact Form' | 'FieldSure Demo Booking' | 'Project Estimation' | 'Download Registration' | 'Direct Inbound';
+  status: 'New' | 'Contacted' | 'Proposal Sent' | 'In Negotiation' | 'Converted' | 'Closed / Archive';
+  priority: 'High' | 'Medium' | 'Low';
+  notes?: string;
+  createdAt: string;
+  followUpDate?: string;
+}
+
 
 export interface DownloadItem {
   id: string;

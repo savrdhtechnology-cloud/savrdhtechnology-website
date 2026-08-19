@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigation } from '../../context/NavigationContext';
+import { useData } from '../../context/DataContext';
 import { COMPANY_INFO } from '../../data/companyData';
+
 import {
   X,
   Lock,
@@ -26,6 +28,7 @@ export const Modals: React.FC = () => {
     setOpenProjectModal,
     navigate,
   } = useNavigation();
+  const { addLead } = useData();
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState('');
@@ -49,8 +52,24 @@ export const Modals: React.FC = () => {
 
   const handleDemoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Save to CRM leads
+    addLead({
+      name: demoName.trim(),
+      companyName: demoCompany.trim() || undefined,
+      phoneNumber: demoPhone.trim(),
+      emailAddress: demoEmail.trim() || 'demo@client.com',
+      serviceRequired: 'FieldSure™ SaaS Live Platform Demo',
+      estimatedBudget: `Field Team Size: ${demoTeamSize}`,
+      projectDescription: `Requested live walkthrough for field team size: ${demoTeamSize}. Preferred date/slot: ${demoDate || 'As soon as possible'}.`,
+      source: 'FieldSure Demo Booking',
+      status: 'New',
+      priority: 'High',
+    });
+
     setDemoSubmitted(true);
   };
+
 
   return (
     <AnimatePresence>

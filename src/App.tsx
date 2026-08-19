@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
+import { DataProvider } from './context/DataContext';
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 import { Modals } from './components/common/Modals';
@@ -15,6 +16,7 @@ import { WorkPage } from './pages/WorkPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { DownloadsPage } from './pages/DownloadsPage';
+import { AdminPage } from './pages/AdminPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -75,7 +77,12 @@ const AppContent: React.FC = () => {
       return <ContactPage />;
     }
 
-    // 10. Legal Pages
+    // 10. Admin Portal
+    if (currentPath === '/admin') {
+      return <AdminPage />;
+    }
+
+    // 11. Legal Pages
     if (currentPath === '/privacy-policy') {
       return <PrivacyPolicyPage />;
     }
@@ -83,15 +90,17 @@ const AppContent: React.FC = () => {
       return <TermsPage />;
     }
 
-    // 11. 404 Fallback
+    // 12. 404 Fallback
     return <NotFoundPage />;
   };
 
+  // If on admin route, render full Admin portal layout cleanly
+  const isAdminRoute = currentPath === '/admin';
 
   return (
     <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
-      {/* Sticky Enterprise Header */}
-      <Header />
+      {/* Sticky Enterprise Header (Hidden on standalone admin portal for full workstation view) */}
+      {!isAdminRoute && <Header />}
 
       {/* Main Routed View with Page Transition */}
       <main className="flex-1">
@@ -109,7 +118,7 @@ const AppContent: React.FC = () => {
       </main>
 
       {/* Corporate Footer */}
-      <Footer />
+      {!isAdminRoute && <Footer />}
 
       {/* Global Modals (Login & FieldSure Demo) */}
       <Modals />
@@ -120,8 +129,11 @@ const AppContent: React.FC = () => {
 export default function App() {
   return (
     <NavigationProvider>
-      <AppContent />
+      <DataProvider>
+        <AppContent />
+      </DataProvider>
     </NavigationProvider>
   );
 }
+
 

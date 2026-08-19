@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigation } from '../context/NavigationContext';
+import { useData } from '../context/DataContext';
 import { COMPANY_INFO } from '../data/companyData';
+
 import { SEO } from '../components/common/SEO';
 import { ContactFormData } from '../types';
 import {
@@ -19,8 +21,10 @@ import {
 
 export const ContactPage: React.FC = () => {
   const { setOpenDemoModal } = useNavigation();
+  const { addLead } = useData();
 
   const [formData, setFormData] = useState<ContactFormData>({
+
     fullName: '',
     companyName: '',
     phoneNumber: '',
@@ -80,6 +84,20 @@ export const ContactPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
+
+    // Save lead into persistent DataContext for Admin CRM
+    addLead({
+      name: formData.fullName.trim(),
+      companyName: formData.companyName.trim() || undefined,
+      phoneNumber: formData.phoneNumber.trim(),
+      emailAddress: formData.emailAddress.trim(),
+      serviceRequired: formData.serviceRequired,
+      estimatedBudget: formData.estimatedBudget,
+      projectDescription: formData.projectDescription.trim(),
+      source: 'Contact Form',
+      status: 'New',
+      priority: 'High',
+    });
 
     setTimeout(() => {
       setIsSubmitting(false);

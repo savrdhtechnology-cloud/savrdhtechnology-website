@@ -330,7 +330,24 @@ export const Header: React.FC = () => {
             </nav>
 
             {/* Desktop Actions */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-2.5">
+              {/* Admin Portal Button */}
+              <motion.button
+                id="admin-portal-header-btn"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => handleNav('/admin')}
+                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border transition-all shadow-sm cursor-pointer ${
+                  currentPath === '/admin'
+                    ? 'bg-blue-600/30 text-cyan-300 border-cyan-500/50'
+                    : 'text-slate-300 hover:text-cyan-300 border-slate-800 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-800/80'
+                }`}
+                title="Admin Control Center"
+              >
+                <Shield className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Admin</span>
+              </motion.button>
+
               {/* Client Login Button */}
               <motion.button
                 id="client-login-header-btn"
@@ -358,6 +375,7 @@ export const Header: React.FC = () => {
                 </div>
               </motion.button>
             </div>
+
 
             {/* Mobile Menu Button */}
             <div className="flex items-center gap-2 lg:hidden">
@@ -523,6 +541,14 @@ export const Header: React.FC = () => {
               {/* Mobile Actions */}
               <div className="pt-4 space-y-2 border-t border-slate-800">
                 <button
+                  onClick={() => handleNav('/admin')}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-slate-800 bg-slate-900/90 text-cyan-300 text-xs font-semibold"
+                >
+                  <Shield className="w-4 h-4 text-cyan-400" />
+                  <span>Admin Control Center</span>
+                </button>
+
+                <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     setOpenLoginModal(true);
@@ -532,6 +558,7 @@ export const Header: React.FC = () => {
                   <LogIn className="w-4 h-4 text-blue-400" />
                   <span>Client Login Portal</span>
                 </button>
+
 
                 <button
                   onClick={() => handleNav('/contact')}

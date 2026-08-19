@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigation } from '../../context/NavigationContext';
-import { CLIENTS_DATA } from '../../data/companyData';
+import { useData } from '../../context/DataContext';
 import { ClientItem } from '../../types';
+
 import {
   Building2,
   ExternalLink,
@@ -22,7 +23,12 @@ import {
 
 export const ClientsSection: React.FC = () => {
   const { navigate } = useNavigation();
+  const { clients } = useData();
   const [selectedClientModal, setSelectedClientModal] = useState<ClientItem | null>(null);
+
+  // Filter clients that are visible on home (all by default)
+  const displayClients = clients.filter((c) => c.featuredOnHome !== false);
+
 
   return (
     <section
@@ -74,7 +80,7 @@ export const ClientsSection: React.FC = () => {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              {CLIENTS_DATA.map((c) => (
+              {displayClients.map((c) => (
                 <div key={c.id}>
                   {c.websiteUrl ? (
                     <a
@@ -104,7 +110,8 @@ export const ClientsSection: React.FC = () => {
 
         {/* 4 In-Depth Client Project Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {CLIENTS_DATA.map((client, idx) => (
+          {displayClients.map((client, idx) => (
+
             <motion.div
               key={client.id}
               id={`client-card-${client.id}`}
