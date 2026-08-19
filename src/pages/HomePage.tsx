@@ -8,6 +8,7 @@ import { ProcessSection } from '../components/home/ProcessSection';
 import { WhyChooseUsSection } from '../components/home/WhyChooseUsSection';
 import { ProductShowcase } from '../components/home/ProductShowcase';
 import { WorkSection } from '../components/home/WorkSection';
+import { ClientsSection } from '../components/home/ClientsSection';
 import { AboutSection } from '../components/home/AboutSection';
 import { ContactSection } from '../components/home/ContactSection';
 import { CTASection } from '../components/home/CTASection';
@@ -43,17 +44,21 @@ export const HomePage: React.FC = () => {
       {/* 7. Product Showcase */}
       <ProductShowcase />
 
-      {/* 8. Our Work Section */}
+      {/* 8. Our Clients & Delivered Projects Section */}
+      <ClientsSection />
+
+      {/* 9. Our Work & Case Studies Section */}
       <WorkSection />
 
-      {/* 9. About Section */}
+      {/* 10. About Section */}
       <AboutSection />
 
-      {/* 10. Contact Section */}
+      {/* 11. Contact Section */}
       <ContactSection />
 
-      {/* 11. Final CTA Banner */}
+      {/* 12. Final CTA Banner */}
       <CTASection />
     </div>
   );
 };
+

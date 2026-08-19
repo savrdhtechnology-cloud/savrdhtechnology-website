@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useNavigation } from '../../context/NavigationContext';
 import { COMPANY_INFO } from '../../data/companyData';
 import {
@@ -41,19 +42,9 @@ export const Modals: React.FC = () => {
   const [demoDate, setDemoDate] = useState('');
   const [demoSubmitted, setDemoSubmitted] = useState(false);
 
-  // Quick project modal state
-  const [projName, setProjName] = useState('');
-  const [projPhone, setProjPhone] = useState('');
-  const [projEmail, setProjEmail] = useState('');
-  const [projService, setProjService] = useState('Custom Software Development');
-  const [projSubmitted, setProjSubmitted] = useState(false);
-
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoginSubmitted(true);
-    setTimeout(() => {
-      // In real deployment, connects to backend auth API
-    }, 400);
   };
 
   const handleDemoSubmit = (e: React.FormEvent) => {
@@ -61,26 +52,31 @@ export const Modals: React.FC = () => {
     setDemoSubmitted(true);
   };
 
-  const handleProjSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setProjSubmitted(true);
-  };
-
   return (
-    <>
+    <AnimatePresence>
       {/* 1. Client Login Modal */}
       {openLoginModal && (
-        <div
+        <motion.div
           id="client-login-modal"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
         >
-          <div className="relative w-full max-w-md bg-[#090e1b] border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-slate-200">
+          <motion.div
+            initial={{ scale: 0.94, opacity: 0, y: 16 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.94, opacity: 0, y: 16 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="relative w-full max-w-md bg-[#090e1b] border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-slate-200"
+          >
             <button
               onClick={() => {
                 setOpenLoginModal(false);
                 setLoginSubmitted(false);
               }}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors"
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors cursor-pointer"
               aria-label="Close Login Modal"
             >
               <X className="w-5 h-5" />
@@ -101,7 +97,7 @@ export const Modals: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setLoginPortalType('fieldsure')}
-                className={`py-2 text-xs font-semibold rounded-lg transition-all ${
+                className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                   loginPortalType === 'fieldsure'
                     ? 'bg-blue-600 text-white shadow-md'
                     : 'text-slate-400 hover:text-white'
@@ -112,7 +108,7 @@ export const Modals: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setLoginPortalType('client')}
-                className={`py-2 text-xs font-semibold rounded-lg transition-all ${
+                className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                   loginPortalType === 'client'
                     ? 'bg-blue-600 text-white shadow-md'
                     : 'text-slate-400 hover:text-white'
@@ -123,7 +119,11 @@ export const Modals: React.FC = () => {
             </div>
 
             {loginSubmitted ? (
-              <div className="py-6 text-center space-y-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="py-6 text-center space-y-4"
+              >
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 mx-auto flex items-center justify-center">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
@@ -142,11 +142,11 @@ export const Modals: React.FC = () => {
                     setLoginSubmitted(false);
                     navigate(loginPortalType === 'fieldsure' ? '/products/fieldsure' : '/work');
                   }}
-                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors"
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
                 >
                   Enter Workspace
                 </button>
-              </div>
+              </motion.div>
             ) : (
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
@@ -194,7 +194,7 @@ export const Modals: React.FC = () => {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white rounded-lg text-xs font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white rounded-lg text-xs font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Secure Sign In</span>
                     <ArrowRight className="w-4 h-4" />
@@ -208,23 +208,33 @@ export const Modals: React.FC = () => {
                 </div>
               </form>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
       {/* 2. Book Live Demo Modal for FieldSure™ */}
       {openDemoModal && (
-        <div
+        <motion.div
           id="book-demo-modal"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
         >
-          <div className="relative w-full max-w-lg bg-[#090e1b] border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-slate-200 max-h-[90vh] overflow-y-auto">
+          <motion.div
+            initial={{ scale: 0.94, opacity: 0, y: 16 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.94, opacity: 0, y: 16 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="relative w-full max-w-lg bg-[#090e1b] border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-slate-200 max-h-[90vh] overflow-y-auto"
+          >
             <button
               onClick={() => {
                 setOpenDemoModal(false);
                 setDemoSubmitted(false);
               }}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors"
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors cursor-pointer"
               aria-label="Close Demo Modal"
             >
               <X className="w-5 h-5" />
@@ -247,7 +257,11 @@ export const Modals: React.FC = () => {
             </p>
 
             {demoSubmitted ? (
-              <div className="py-8 text-center space-y-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="py-8 text-center space-y-4"
+              >
                 <div className="w-14 h-14 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 mx-auto flex items-center justify-center">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
@@ -285,11 +299,11 @@ export const Modals: React.FC = () => {
                     setOpenDemoModal(false);
                     setDemoSubmitted(false);
                   }}
-                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors"
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
                 >
                   Close Window
                 </button>
-              </div>
+              </motion.div>
             ) : (
               <form onSubmit={handleDemoSubmit} className="space-y-3.5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -385,7 +399,7 @@ export const Modals: React.FC = () => {
                 <div className="pt-3">
                   <button
                     type="submit"
-                    className="w-full py-3 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:brightness-110 text-white rounded-lg text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:brightness-110 text-white rounded-lg text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Calendar className="w-4 h-4" />
                     <span>Confirm Live Demo Booking</span>
@@ -393,9 +407,10 @@ export const Modals: React.FC = () => {
                 </div>
               </form>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };
+

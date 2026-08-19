@@ -1,4 +1,5 @@
-import { ServiceItem, ProductItem, PortfolioItem, TechCapability } from '../types';
+import { ServiceItem, ProductItem, PortfolioItem, TechCapability, ClientItem, DownloadItem } from '../types';
+
 
 export const COMPANY_INFO = {
   name: 'Savrdh Technologies',
@@ -1022,3 +1023,268 @@ export const TECH_CAPABILITIES: TechCapability[] = [
     tools: ['24/7 Health Monitoring', 'Security Patching', 'Version Upgrades', 'SLA Support'],
   },
 ];
+
+export const CLIENTS_DATA: ClientItem[] = [
+  {
+    id: 'akbs-poultry',
+    name: 'AKBS Poultry Farming Private Limited',
+    companyName: 'AKBS Poultry Farming Pvt. Ltd.',
+    industry: 'Agri-Tech & Commercial Poultry Enterprise',
+    websiteUrl: 'https://akbspoultry.com/',
+    servicesDelivered: ['Corporate Web Platform', 'Batch Monitoring System', 'Cloud Infrastructure', 'SEO & Performance'],
+    description:
+      'Engineered the official modern digital web platform for AKBS Poultry Farming Private Limited, facilitating farm batch management, poultry feed monitoring, distributor enquiries, and high-trust B2B credibility.',
+    highlight: 'Comprehensive Agri-Tech corporate website featuring farm operations showcasing, product specifications, and direct B2B inquiry routing.',
+    tags: ['Live Website', 'Corporate Platform', 'Agri-Tech', 'Cloud Hosting'],
+    deliverables: [
+      'Official responsive corporate web portal (akbspoultry.com)',
+      'Poultry batch and feed specifications showcase',
+      'Distributor & wholesale inquiry capture system',
+      'Mobile-optimized performance with 99.9% uptime SLA',
+    ],
+    metrics: [
+      { label: 'Uptime Reliability', value: '99.9%' },
+      { label: 'Platform Speed', value: '<0.8s Load' },
+      { label: 'Inquiry Growth', value: '+300%' },
+    ],
+  },
+  {
+    id: 'savrdh-financial',
+    name: 'Savrdh Financial Services Private Limited',
+    companyName: 'Savrdh Financial Services Pvt. Ltd.',
+    industry: 'FinTech & Enterprise Financial Services',
+    websiteUrl: 'https://www.savrdhfinancialservices.com/',
+    hasApp: true,
+    appPlatform: 'Android & iOS Mobile Application',
+    servicesDelivered: ['Corporate Financial Portal', 'FinTech Mobile Application', 'Digital KYC Workflow', 'Secure Customer Portal'],
+    description:
+      'Architected and delivered the comprehensive enterprise FinTech ecosystem for Savrdh Financial Services Private Limited, including an advanced corporate web platform and customer-facing mobile applications for loan facilitation, customer onboarding, and portfolio tracking.',
+    highlight: 'Full-stack financial ecosystem uniting high-security web architecture with native mobile customer applications.',
+    tags: ['Live Website', 'Mobile App', 'FinTech', 'Digital KYC', 'Loan Facilitation'],
+    deliverables: [
+      'Official enterprise financial portal (savrdhfinancialservices.com)',
+      'Native Android and iOS customer mobile applications',
+      'End-to-end digital KYC verification and document upload engine',
+      'Bank-grade encrypted database and RBAC administrative controls',
+    ],
+    metrics: [
+      { label: 'Security Standard', value: '256-bit SSL' },
+      { label: 'Platform Scope', value: 'Web + Mobile' },
+      { label: 'KYC Turnaround', value: 'Real-Time' },
+    ],
+  },
+  {
+    id: 'savrdh-credit-resolution',
+    name: 'Savrdh Credit Resolution',
+    companyName: 'Savrdh Credit Resolution Operations',
+    industry: 'FinTech / Credit Operations & Debt Resolution',
+    hasApp: true,
+    appPlatform: 'Android Mobile Application',
+    servicesDelivered: ['Field Mobility App', 'Case Settlement Engine', 'GPS Visit Verification', 'Automated Receipts'],
+    description:
+      'Engineered the specialized mobile application for Savrdh Credit Resolution, equipping field recovery officers and case managers with secure case assignments, geo-stamped visit verifications, offline receipt generation, and real-time settlement tracking.',
+    highlight: 'Mission-critical mobile application streamlining field recovery workflows and dispute settlement integrity.',
+    tags: ['Mobile Application', 'Field Operations', 'Settlement Engine', 'GPS Audit'],
+    deliverables: [
+      'Field Executive mobile application with offline-first data sync',
+      'Tamper-proof GPS-tagged visit verification and photo audit trail',
+      'Automated digital settlement receipts and instant SMS/Email triggers',
+      'Executive dashboard for real-time portfolio recovery tracking',
+    ],
+    metrics: [
+      { label: 'Resolution Cycle', value: '-40% Time' },
+      { label: 'Audit Trail', value: '100% Geo-stamped' },
+      { label: 'Field Sync', value: 'Offline-Ready' },
+    ],
+  },
+  {
+    id: 'arman-hair-studio',
+    name: 'Arman Hair Studio',
+    companyName: 'Arman Hair Studio (By Arman Khan)',
+    industry: 'Luxury Grooming & Lifestyle Salon',
+    servicesDelivered: ['Salon Brand Website', 'Service Menu & Pricing Portal', 'Stylist Portfolio', 'Direct Booking Integration'],
+    description:
+      'Designed and engineered the premier digital salon studio web presence for Arman Hair Studio by Arman Khan, highlighting signature styling portfolios, bespoke service packages, and direct appointment reservation funnels.',
+    highlight: 'Sophisticated, visual-first salon website engineered for brand elegance and high-conversion client reservations.',
+    tags: ['Live Website', 'Brand Identity', 'Appointment System', 'Portfolio Gallery'],
+    deliverables: [
+      'Sleek, dark-mode luxury salon showcase website',
+      'Interactive service pricing catalogue and stylist bio cards',
+      'Direct WhatsApp and phone reservation integration',
+      'Mobile-first responsive gallery optimized for high-res imagery',
+    ],
+    metrics: [
+      { label: 'Client Booking', value: 'Direct Link' },
+      { label: 'Mobile UX', value: '100% Fluid' },
+      { label: 'Style Portfolio', value: 'High-Res Media' },
+    ],
+  },
+];
+
+export const DOWNLOADS_DATA: DownloadItem[] = [
+  {
+    id: 'fieldsure-mobile-apk',
+    title: 'FieldSure™ Mobile Companion APK (Demo Edition)',
+    productName: 'FieldSure™ Enterprise SaaS',
+    category: 'Mobile APK / App Demo',
+    version: 'v2.4.1 (Demo Sandbox)',
+    releaseDate: 'August 2026',
+    fileSize: '28.4 MB',
+    platform: 'Android 8.0+ / Enterprise APK',
+    badge: 'Popular Demo',
+    description:
+      'Download and test the full FieldSure™ Mobile App demo. Experience real-time GPS check-ins, geofence radius verification, offline task synchronization, and camera-based tamper-proof attendance recording in a secure sandbox.',
+    features: [
+      'Simulated GPS Geofence Attendance (Configurable 50m-500m radius)',
+      'Active Shift Tracker with battery-conservation algorithms',
+      'Camera-based photo audit verification with anti-spoof checks',
+      'Offline job execution with automatic sync upon reconnect',
+      'Expense filing with digital mileage calculator',
+    ],
+    downloadFileName: 'FieldSure_Enterprise_v2.4.1_Demo.apk',
+    checksum: 'SHA-256: 8f4a9b2c1d0e3f5a7b9c2d4e6f8a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a',
+    demoUrl: '/products/fieldsure',
+    instructions: [
+      'Download the demo APK to your Android device.',
+      'Enable "Install from unknown sources" in Android Settings if prompted.',
+      'Launch the app and use Demo Credentials: username `demo@fieldsure.com`, password `demo1234` or choose "Instant Guest Mode".',
+      'Simulate attendance check-in, mock travel tracking, and task completion.',
+    ],
+  },
+  {
+    id: 'fieldsure-web-command',
+    title: 'FieldSure™ Web Command Center (Live Interactive Sandbox)',
+    productName: 'FieldSure™ Enterprise SaaS',
+    category: 'Web Command Center',
+    version: 'v2.4.0 (Cloud Web Release)',
+    releaseDate: 'August 2026',
+    fileSize: 'Cloud SaaS / Instant Access',
+    platform: 'Modern Web Browsers (Chrome, Edge, Safari, Firefox)',
+    badge: 'Flagship Platform',
+    description:
+      'Access the full multi-tenant FieldSure™ Web Command Portal directly. Test live technician location maps, geofence policy editor, automated shift rosters, and executive BI analytics dashboards.',
+    features: [
+      'Real-time technician telemetry & live GPS breadcrumbs',
+      'Dynamic drag-and-drop task dispatching & schedule builder',
+      'Automated biometric attendance scorecards & anomaly logs',
+      'Multi-tier branch & subsidiary organization hierarchy',
+      'Exportable compliance reports (PDF, CSV, Excel)',
+    ],
+    downloadFileName: 'FieldSure_Web_Command_Suite_v2.4.zip',
+    checksum: 'SHA-256: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d',
+    demoUrl: '/products/fieldsure',
+    instructions: [
+      'Click "Launch Live Web Demo" to open the interactive operations command center.',
+      'Navigate through Live Map, Attendance Audit, Dispatch Queue, and Analytics modules.',
+      'Toggle active technician filters and test simulated GPS ping streams.',
+    ],
+  },
+  {
+    id: 'savrdh-credit-resolution-apk',
+    title: 'Savrdh Credit Resolution Mobile App (Enterprise Demo)',
+    productName: 'Savrdh Credit Resolution',
+    category: 'Mobile APK / App Demo',
+    version: 'v1.6.2 (Demo Release)',
+    releaseDate: 'July 2026',
+    fileSize: '24.1 MB',
+    platform: 'Android 9.0+ / Mobile Application',
+    badge: 'FinTech App',
+    description:
+      'Interactive demonstration of the Savrdh Credit Resolution field workflow application. Review loan case settlement pipelines, geo-tagged customer visit logs, digital payment receipt generation, and offline sync capabilities.',
+    features: [
+      'Encrypted Case Assignment & Resolution Status Tracking',
+      'Geo-stamped Customer Visit Proof & Signature Capture',
+      'Instant Digital Settlement Receipt Generation (PDF/SMS)',
+      'Field Executive Daily Recovery Metrics & Route Optimizer',
+    ],
+    downloadFileName: 'Savrdh_Credit_Resolution_v1.6.2_Demo.apk',
+    checksum: 'SHA-256: 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b',
+    demoUrl: '/contact',
+    instructions: [
+      'Download and install the APK on an Android test device.',
+      'Use Sample Recovery Officer ID `officer_042` to explore the active case queue.',
+      'Simulate customer visit check-in, agreement recording, and instant receipt dispatch.',
+    ],
+  },
+  {
+    id: 'fieldsure-noc-display',
+    title: 'FieldSure™ Operations Center / TV Wall Display Client',
+    productName: 'FieldSure™ Enterprise SaaS',
+    category: 'Desktop / TV Wall App',
+    version: 'v1.8.0',
+    releaseDate: 'August 2026',
+    fileSize: '42.8 MB',
+    platform: 'Windows 10/11, macOS, Android TV',
+    badge: 'NOC Display',
+    description:
+      'High-resolution multi-monitor desktop and smart TV client designed for Enterprise Network Operations Centers (NOC), logistics rooms, and multi-screen video walls.',
+    features: [
+      'Ultra-wide 4K/8K multi-monitor viewport rendering',
+      'Real-time live incident alerts and automated camera zoom',
+      'Zero-latency WebGL map rendering engine',
+      'Configurable split-screen quadrant layouts',
+    ],
+    downloadFileName: 'FieldSure_NOC_Display_Wall_v1.8.0_Setup.exe',
+    checksum: 'SHA-256: 1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d2c3b4a5f6e7d8c9b0a1f2e',
+    demoUrl: '/products/fieldsure',
+    instructions: [
+      'Download the installer for your operations display server or workstation.',
+      'Follow the setup wizard to configure monitor bounds and resolution.',
+      'Pair with your enterprise FieldSure™ tenant instance via API token.',
+    ],
+  },
+  {
+    id: 'savrdh-enterprise-whitepaper',
+    title: 'Savrdh Technologies Enterprise Architecture & Security Whitepaper',
+    productName: 'Savrdh Technologies Security Architecture',
+    category: 'Product Brochure',
+    version: '2026-2027 Edition',
+    releaseDate: 'August 2026',
+    fileSize: '6.2 MB',
+    platform: 'Universal PDF Document',
+    badge: 'Whitepaper',
+    description:
+      'A comprehensive 36-page technical whitepaper covering Savrdh Technologies engineering standards, ISO 27001-aligned security controls, DPDP data protection mechanisms, high-availability cloud VPC topologies, and microservice benchmarks.',
+    features: [
+      'DPDP compliance blueprint and personal data minimization controls',
+      'Zero-Trust network architecture and role-based access matrix',
+      'High-availability disaster recovery (RTO < 15 min, RPO < 5 min)',
+      'REST & WebSocket API performance benchmarks under 100k req/sec load',
+    ],
+    downloadFileName: 'Savrdh_Technologies_Enterprise_Architecture_Whitepaper.pdf',
+    checksum: 'SHA-256: 5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b',
+    demoUrl: '/contact',
+    instructions: [
+      'Click Download to save the complete PDF whitepaper.',
+      'Suitable for Enterprise CTOs, Security Officers (CISOs), and IT Procurement Committees.',
+    ],
+  },
+  {
+    id: 'fieldsure-api-sdk',
+    title: 'FieldSure™ Enterprise REST API SDK & Postman Collection',
+    productName: 'FieldSure™ Enterprise SaaS',
+    category: 'Documentation & SDK',
+    version: 'v2.4.0 API Specs',
+    releaseDate: 'August 2026',
+    fileSize: '4.8 MB',
+    platform: 'TypeScript, Node.js, Python, OpenAPI 3.0, Postman',
+    badge: 'Developer SDK',
+    description:
+      'Complete developer starter kit for integrating FieldSure™ workforce events with SAP, Oracle, Microsoft Dynamics, Salesforce, or proprietary corporate ERP databases.',
+    features: [
+      'OpenAPI 3.0 / Swagger JSON specifications',
+      'Ready-to-import Postman Collection with pre-configured environment variables',
+      'TypeScript and Python client libraries with request signatures',
+      'Webhook listener reference servers with HMAC payload verification',
+    ],
+    downloadFileName: 'FieldSure_Enterprise_API_SDK_v2.4.zip',
+    checksum: 'SHA-256: 7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c',
+    demoUrl: '/contact',
+    instructions: [
+      'Extract the ZIP bundle to your development workspace.',
+      'Import `FieldSure_Postman_Collection.json` into Postman to explore endpoints.',
+      'Use the provided TypeScript/Python SDK clients for rapid ERP integration.',
+    ],
+  },
+];
+

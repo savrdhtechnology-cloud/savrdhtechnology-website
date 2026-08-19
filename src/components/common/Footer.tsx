@@ -155,7 +155,7 @@ export const Footer: React.FC = () => {
           {/* Products Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Products
+              Products & Demos
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
@@ -168,6 +168,15 @@ export const Footer: React.FC = () => {
                     <span>FieldSure™ SaaS</span>
                     <span className="block text-[10px] text-cyan-400/80">Flagship Workforce App</span>
                   </div>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('/downloads')}
+                  className="hover:text-cyan-400 transition-colors text-left flex items-center gap-1 group font-semibold text-cyan-300"
+                >
+                  <ChevronRight className="w-3 h-3 text-cyan-500 group-hover:text-cyan-400 transition-colors" />
+                  <span>Download Center & APKs</span>
                 </button>
               </li>
               <li>
@@ -212,7 +221,16 @@ export const Footer: React.FC = () => {
                   className="hover:text-blue-400 transition-colors flex items-center gap-1 group"
                 >
                   <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 transition-colors" />
-                  <span>Our Work Portfolio</span>
+                  <span>Our Clients & Work</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('/downloads')}
+                  className="hover:text-blue-400 transition-colors flex items-center gap-1 group"
+                >
+                  <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 transition-colors" />
+                  <span>Product Demos & Whitepapers</span>
                 </button>
               </li>
               <li>
@@ -252,31 +270,34 @@ export const Footer: React.FC = () => {
             © {currentYear} {COMPANY_INFO.name}. All rights reserved.
           </div>
 
-          {/* Social placeholders - strictly non-broken, accessible aria labels */}
+          {/* Social Links */}
           <div className="flex items-center gap-3">
-            <span className="text-[11px] text-slate-400">Follow:</span>
-            <button
-              aria-label="Savrdh Technologies on LinkedIn"
-              className="p-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-400 hover:text-blue-400 hover:border-slate-700 transition-colors"
-              onClick={() => alert('Savrdh Technologies LinkedIn Company Profile')}
-            >
-              <Linkedin className="w-3.5 h-3.5" />
-            </button>
-            <button
-              aria-label="Savrdh Technologies on Twitter"
+            <span className="text-[11px] text-slate-400">Direct Connect:</span>
+            <a
+              href={`mailto:${COMPANY_INFO.email}`}
+              aria-label="Email Savrdh Technologies"
               className="p-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-400 hover:text-cyan-400 hover:border-slate-700 transition-colors"
-              onClick={() => alert('Savrdh Technologies Twitter Updates')}
             >
-              <Twitter className="w-3.5 h-3.5" />
-            </button>
-            <button
-              aria-label="Savrdh Technologies Open Source Repositories"
-              className="p-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
-              onClick={() => alert('Savrdh Technologies Developer Repositories')}
+              <Mail className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href={COMPANY_INFO.whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp Savrdh Technologies"
+              className="p-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-400 hover:text-emerald-400 hover:border-slate-700 transition-colors"
             >
-              <Github className="w-3.5 h-3.5" />
-            </button>
+              <MessageSquare className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href={COMPANY_INFO.phoneLink}
+              aria-label="Call Savrdh Technologies"
+              className="p-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-400 hover:text-blue-400 hover:border-slate-700 transition-colors"
+            >
+              <Phone className="w-3.5 h-3.5" />
+            </a>
           </div>
+
 
           <div className="flex items-center gap-4 text-slate-400 text-xs">
             <button onClick={() => navigate('/privacy-policy')} className="hover:text-slate-300">

@@ -28,7 +28,9 @@ import {
   MessageSquare,
   FileCheck,
   Zap,
+  Download,
 } from 'lucide-react';
+
 
 export const FieldSurePage: React.FC = () => {
   const { setOpenDemoModal, navigate } = useNavigation();
@@ -92,6 +94,14 @@ export const FieldSurePage: React.FC = () => {
                 <span>Book a Live Demo</span>
               </button>
 
+              <button
+                onClick={() => navigate('/downloads')}
+                className="px-5 py-3.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <Download className="w-4 h-4 text-cyan-400" />
+                <span>Download Demo APK</span>
+              </button>
+
               <a
                 href={COMPANY_INFO.phoneLink}
                 className="px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs sm:text-sm font-bold transition-all flex items-center gap-2"
@@ -99,6 +109,7 @@ export const FieldSurePage: React.FC = () => {
                 <Phone className="w-4 h-4 text-cyan-400" />
                 <span>Call {COMPANY_INFO.phone}</span>
               </a>
+
 
               <a
                 href={COMPANY_INFO.whatsappLink}

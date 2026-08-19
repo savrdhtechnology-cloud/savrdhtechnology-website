@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
@@ -13,6 +14,7 @@ import { FieldSurePage } from './pages/FieldSurePage';
 import { WorkPage } from './pages/WorkPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
+import { DownloadsPage } from './pages/DownloadsPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -53,22 +55,27 @@ const AppContent: React.FC = () => {
       return <FieldSurePage />;
     }
 
-    // 6. Portfolio / Work
+    // 6. Downloads & Product Demos
+    if (currentPath === '/downloads') {
+      return <DownloadsPage />;
+    }
+
+    // 7. Portfolio / Work
     if (currentPath === '/work') {
       return <WorkPage />;
     }
 
-    // 7. About Company
+    // 8. About Company
     if (currentPath === '/about') {
       return <AboutPage />;
     }
 
-    // 8. Contact
+    // 9. Contact
     if (currentPath === '/contact') {
       return <ContactPage />;
     }
 
-    // 9. Legal Pages
+    // 10. Legal Pages
     if (currentPath === '/privacy-policy') {
       return <PrivacyPolicyPage />;
     }
@@ -76,18 +83,29 @@ const AppContent: React.FC = () => {
       return <TermsPage />;
     }
 
-    // 10. 404 Fallback
+    // 11. 404 Fallback
     return <NotFoundPage />;
   };
+
 
   return (
     <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
       {/* Sticky Enterprise Header */}
       <Header />
 
-      {/* Main Routed View */}
+      {/* Main Routed View with Page Transition */}
       <main className="flex-1">
-        {renderCurrentView()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPath}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
+            {renderCurrentView()}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Corporate Footer */}
@@ -106,3 +124,4 @@ export default function App() {
     </NavigationProvider>
   );
 }
+

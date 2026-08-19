@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { PROCESS_STEPS } from '../../data/companyData';
 import {
   Compass,
@@ -33,7 +34,13 @@ export const ProcessSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-3">
             <Sparkles className="w-3 h-3" />
             <span>DISCIPLINED EXECUTION</span>
@@ -44,7 +51,7 @@ export const ProcessSection: React.FC = () => {
           <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
             Our structured five-phase development lifecycle guarantees transparent milestones, technical rigor, and predictable delivery from day one.
           </p>
-        </div>
+        </motion.div>
 
         {/* 5-Step Process Timeline */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
@@ -52,8 +59,13 @@ export const ProcessSection: React.FC = () => {
           <div className="hidden md:block absolute top-1/2 left-10 right-10 h-0.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 -translate-y-12 z-0 opacity-30" />
 
           {PROCESS_STEPS.map((step, idx) => (
-            <div
+            <motion.div
               key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: idx * 0.1 }}
+              whileHover={{ y: -5 }}
               className="relative z-10 p-5 rounded-2xl bg-gradient-to-b from-slate-900/90 to-[#080d1a] border border-slate-800/90 hover:border-slate-700 transition-all group flex flex-col justify-between"
             >
               <div>
@@ -79,10 +91,11 @@ export const ProcessSection: React.FC = () => {
               <div className="mt-4 pt-3 border-t border-slate-800/70 text-[11px] text-slate-400 leading-normal">
                 {step.detail}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
 };
+

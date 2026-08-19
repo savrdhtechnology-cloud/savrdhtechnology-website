@@ -84,3 +84,42 @@ export interface TechCapability {
   description: string;
   tools: string[];
 }
+
+export interface ClientItem {
+  id: string;
+  name: string;
+  companyName: string;
+  industry: string;
+  servicesDelivered: string[];
+  websiteUrl?: string;
+  hasApp?: boolean;
+  appPlatform?: string;
+  description: string;
+  highlight: string;
+  tags: string[];
+  deliverables: string[];
+  metrics?: {
+    label: string;
+    value: string;
+  }[];
+}
+
+export interface DownloadItem {
+  id: string;
+  title: string;
+  productName: string;
+  category: 'Mobile APK / App Demo' | 'Web Command Center' | 'Desktop / TV Wall App' | 'Documentation & SDK' | 'Product Brochure';
+  version: string;
+  releaseDate: string;
+  fileSize: string;
+  platform: string;
+  description: string;
+  features: string[];
+  downloadFileName: string;
+  checksum: string;
+  badge?: string;
+  demoUrl?: string;
+  architectureDiagram?: string;
+  instructions: string[];
+}
+

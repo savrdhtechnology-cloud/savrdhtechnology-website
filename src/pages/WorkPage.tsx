@@ -3,7 +3,9 @@ import { useNavigation } from '../context/NavigationContext';
 import { PORTFOLIO_PROJECTS, COMPANY_INFO } from '../data/companyData';
 import { PortfolioItem } from '../types';
 import { SEO } from '../components/common/SEO';
+import { ClientsSection } from '../components/home/ClientsSection';
 import { CTASection } from '../components/home/CTASection';
+
 import {
   FolderGit2,
   ExternalLink,
@@ -254,7 +256,11 @@ export const WorkPage: React.FC = () => {
         </div>
       )}
 
+      {/* Live Client Projects */}
+      <ClientsSection />
+
       <CTASection />
     </div>
   );
 };
+

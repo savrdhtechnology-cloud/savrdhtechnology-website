@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useNavigation } from '../../context/NavigationContext';
 import { PORTFOLIO_PROJECTS } from '../../data/companyData';
 import { PortfolioItem } from '../../types';
@@ -55,7 +56,13 @@ export const WorkSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-3">
             <FolderGit2 className="w-3 h-3" />
             <span>ENGINEERING PORTFOLIO</span>
@@ -66,7 +73,7 @@ export const WorkSection: React.FC = () => {
           <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
             Explore conceptual project blueprints and enterprise software solutions demonstrating our design precision, full-stack scalability, and technical depth.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category Filters */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
@@ -74,7 +81,7 @@ export const WorkSection: React.FC = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-blue-600 text-white shadow-md'
                   : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
@@ -87,10 +94,15 @@ export const WorkSection: React.FC = () => {
 
         {/* Portfolio Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <div
+          {filteredProjects.map((project, idx) => (
+            <motion.div
               key={project.id}
-              className="group rounded-2xl bg-gradient-to-b from-slate-900/90 to-[#080d1a] border border-slate-800/90 hover:border-blue-500/50 p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: (idx % 3) * 0.1 }}
+              whileHover={{ y: -5 }}
+              className="group rounded-2xl bg-gradient-to-b from-slate-900/90 to-[#080d1a] border border-slate-800/90 hover:border-blue-500/50 p-6 shadow-lg transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 {/* Visual Header / Mockup Representation */}
@@ -151,111 +163,127 @@ export const WorkSection: React.FC = () => {
                   <ExternalLink className="w-3.5 h-3.5" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* View all button */}
         <div className="mt-12 text-center">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/work')}
-            className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 hover:text-white text-xs font-bold transition-colors inline-flex items-center gap-2"
+            className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 hover:text-white text-xs font-bold transition-colors inline-flex items-center gap-2 cursor-pointer"
           >
             <span>Explore Complete Portfolio & Engineering Standards</span>
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Case Study Detail Modal */}
-      {activeProjectModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="relative w-full max-w-2xl bg-[#090e1b] border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-slate-200 max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setActiveProjectModal(null)}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors"
-              aria-label="Close modal"
+      <AnimatePresence>
+        {activeProjectModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.94, opacity: 0, y: 15 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-2xl bg-[#090e1b] border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-slate-200 max-h-[90vh] overflow-y-auto"
             >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="mb-6">
-              <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider">
-                {activeProjectModal.category}
-              </span>
-              <h3 className="text-xl font-bold text-white mt-1">
-                {activeProjectModal.title}
-              </h3>
-              <p className="text-xs text-slate-400 mt-1">
-                Client Profile: {activeProjectModal.clientType}
-              </p>
-            </div>
-
-            <div className="space-y-5 text-xs text-slate-300">
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
-                <div className="font-bold text-white mb-1">Executive Summary</div>
-                <p className="leading-relaxed text-slate-400">{activeProjectModal.summary}</p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                  <div className="font-bold text-red-400 mb-1">The Operational Challenge</div>
-                  <p className="leading-relaxed text-slate-400">{activeProjectModal.challenge}</p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                  <div className="font-bold text-emerald-400 mb-1">Engineered Solution</div>
-                  <p className="leading-relaxed text-slate-400">{activeProjectModal.solution}</p>
-                </div>
-              </div>
-
-              <div>
-                <div className="font-bold text-white mb-2">Key Measurable Outcomes</div>
-                <div className="space-y-2">
-                  {activeProjectModal.keyOutcomes.map((outcome, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
-                      <span>{outcome}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="font-bold text-white mb-2">Applied Technology Stack</div>
-                <div className="flex flex-wrap gap-2">
-                  {activeProjectModal.techStack.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-md bg-slate-950 text-cyan-300 border border-slate-800 font-mono text-[11px]"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
-              <button
-                onClick={() => {
-                  setActiveProjectModal(null);
-                  navigate('/contact');
-                }}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-colors"
-              >
-                Discuss Similar Architecture
-              </button>
               <button
                 onClick={() => setActiveProjectModal(null)}
-                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold"
+                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/80 transition-colors cursor-pointer"
+                aria-label="Close modal"
               >
-                Close
+                <X className="w-5 h-5" />
               </button>
-            </div>
-          </div>
-        </div>
-      )}
+
+              <div className="mb-6">
+                <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider">
+                  {activeProjectModal.category}
+                </span>
+                <h3 className="text-xl font-bold text-white mt-1">
+                  {activeProjectModal.title}
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Client Profile: {activeProjectModal.clientType}
+                </p>
+              </div>
+
+              <div className="space-y-5 text-xs text-slate-300">
+                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
+                  <div className="font-bold text-white mb-1">Executive Summary</div>
+                  <p className="leading-relaxed text-slate-400">{activeProjectModal.summary}</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                    <div className="font-bold text-red-400 mb-1">The Operational Challenge</div>
+                    <p className="leading-relaxed text-slate-400">{activeProjectModal.challenge}</p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                    <div className="font-bold text-emerald-400 mb-1">Engineered Solution</div>
+                    <p className="leading-relaxed text-slate-400">{activeProjectModal.solution}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="font-bold text-white mb-2">Key Measurable Outcomes</div>
+                  <div className="space-y-2">
+                    {activeProjectModal.keyOutcomes.map((outcome, idx) => (
+                      <div key={idx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                        <span>{outcome}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="font-bold text-white mb-2">Applied Technology Stack</div>
+                  <div className="flex flex-wrap gap-2">
+                    {activeProjectModal.techStack.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded-md bg-slate-950 text-cyan-300 border border-slate-800 font-mono text-[11px]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+                <button
+                  onClick={() => {
+                    setActiveProjectModal(null);
+                    navigate('/contact');
+                  }}
+                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                >
+                  Discuss Similar Architecture
+                </button>
+                <button
+                  onClick={() => setActiveProjectModal(null)}
+                  className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
+

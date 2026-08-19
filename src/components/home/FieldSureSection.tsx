@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { motion } from 'motion/react';
 import { useNavigation } from '../../context/NavigationContext';
 import { FIELDSURE_PRODUCT, COMPANY_INFO } from '../../data/companyData';
 import {
@@ -23,7 +24,6 @@ import {
 
 export const FieldSureSection: React.FC = () => {
   const { navigate, setOpenDemoModal } = useNavigation();
-  const [activeFeatureTab, setActiveFeatureTab] = useState<number>(0);
 
   const featureIcons = [
     <MapPin className="w-4 h-4 text-cyan-400" />,
@@ -51,7 +51,13 @@ export const FieldSureSection: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Top Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14"
+        >
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-3">
             <Shield className="w-3 h-3" />
             <span>OUR FLAGSHIP SAAS</span>
@@ -70,23 +76,27 @@ export const FieldSureSection: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <button
+            <motion.button
               id="fieldsure-explore-btn"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/products/fieldsure')}
               className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white text-xs sm:text-sm font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 cursor-pointer"
             >
               <span>Explore FieldSure</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
               id="fieldsure-book-demo-btn"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setOpenDemoModal(true)}
               className="px-6 py-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs sm:text-sm font-bold border border-cyan-500/40 hover:border-cyan-400 transition-all flex items-center gap-2 cursor-pointer"
             >
               <Calendar className="w-4 h-4 text-cyan-400" />
               <span>Book a Live Demo</span>
-            </button>
+            </motion.button>
           </div>
 
           {/* Compliance Statement */}
@@ -94,7 +104,7 @@ export const FieldSureSection: React.FC = () => {
             <Shield className="w-3.5 h-3.5 text-emerald-400" />
             <span>{COMPANY_INFO.complianceNotice}</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* 12 Feature Cards Grid */}
         <div className="mb-14">
@@ -109,8 +119,13 @@ export const FieldSureSection: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             {FIELDSURE_PRODUCT.features.map((feature, idx) => (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.4, delay: (idx % 4) * 0.08 }}
+                whileHover={{ y: -3 }}
                 className="p-4 rounded-xl bg-slate-900/70 border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-200 group flex items-start gap-3"
               >
                 <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 group-hover:border-slate-700 transition-colors flex-shrink-0">
@@ -135,13 +150,19 @@ export const FieldSureSection: React.FC = () => {
                     {idx === 11 && 'Network Operations Command dashboard with popout controls.'}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Interactive Preview Teaser & Direct Demo Callout */}
-        <div className="p-8 rounded-2xl bg-gradient-to-r from-blue-950/40 via-slate-900/60 to-cyan-950/40 border border-blue-800/50 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5 }}
+          className="p-8 rounded-2xl bg-gradient-to-r from-blue-950/40 via-slate-900/60 to-cyan-950/40 border border-blue-800/50 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8"
+        >
           <div className="space-y-3 max-w-xl">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
               Ready for Deployment
@@ -169,22 +190,36 @@ export const FieldSureSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/downloads')}
+              className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+            >
+              <span>Download Demo APK</span>
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setOpenDemoModal(true)}
               className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-white text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book FieldSure™ Live Demo</span>
-            </button>
-            <a
+              <span>Book Live Demo</span>
+            </motion.button>
+            <motion.a
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               href={COMPANY_INFO.phoneLink}
-              className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-4 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Call: {COMPANY_INFO.phone}</span>
-            </a>
+              <span>{COMPANY_INFO.phone}</span>
+            </motion.a>
           </div>
-        </div>
+
+        </motion.div>
       </div>
     </section>
   );
 };
+

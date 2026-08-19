@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { WHY_CHOOSE_US } from '../../data/companyData';
 import {
   Briefcase,
@@ -47,7 +48,13 @@ export const WhyChooseUsSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-3">
             <ShieldCheck className="w-3 h-3" />
             <span>ENGINEERING INTEGRITY</span>
@@ -58,13 +65,18 @@ export const WhyChooseUsSection: React.FC = () => {
           <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
             We build digital products that prioritize long-term maintainability, bulletproof security, and clear business outcomes over marketing hype.
           </p>
-        </div>
+        </motion.div>
 
         {/* 10 Trust Points Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {WHY_CHOOSE_US.map((item, idx) => (
-            <div
+            <motion.div
               key={idx}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.4, delay: (idx % 5) * 0.08 }}
+              whileHover={{ y: -4 }}
               className="p-5 rounded-2xl bg-gradient-to-b from-slate-900/80 to-[#080d1a] border border-slate-800/80 hover:border-slate-700 transition-all duration-200 group flex flex-col justify-between"
             >
               <div>
@@ -83,10 +95,11 @@ export const WhyChooseUsSection: React.FC = () => {
                 <span className="w-1 h-1 rounded-full bg-cyan-400" />
                 <span>Verified Standard</span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
 };
+

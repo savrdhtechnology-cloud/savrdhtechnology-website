@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Monitor,
   Laptop,
@@ -23,7 +24,12 @@ export const HeroMockups: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'desktop' | 'saas' | 'mobile'>('all');
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto mt-12 lg:mt-16">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
+      className="relative w-full max-w-5xl mx-auto mt-12 lg:mt-16"
+    >
       {/* Background ambient lighting */}
       <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-64 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-20 right-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
@@ -34,7 +40,7 @@ export const HeroMockups: React.FC = () => {
         <div className="inline-flex p-1 rounded-xl bg-slate-900/90 border border-slate-800 backdrop-blur-md shadow-lg">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'all'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-slate-200'
@@ -44,7 +50,7 @@ export const HeroMockups: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('saas')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'saas'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-slate-200'
@@ -54,7 +60,7 @@ export const HeroMockups: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('desktop')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'desktop'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-slate-200'
@@ -64,7 +70,7 @@ export const HeroMockups: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('mobile')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'mobile'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-slate-200'
@@ -78,7 +84,11 @@ export const HeroMockups: React.FC = () => {
       {/* Composition Container */}
       <div className="relative">
         {/* Main Center Piece: High-End Laptop Frame with SaaS Analytics Dashboard */}
-        <div className="relative mx-auto max-w-3xl rounded-2xl bg-gradient-to-b from-slate-700 via-slate-800 to-slate-950 p-2.5 sm:p-3.5 shadow-2xl border border-slate-700/60 ring-1 ring-white/10">
+        <motion.div
+          whileHover={{ y: -4 }}
+          transition={{ duration: 0.3 }}
+          className="relative mx-auto max-w-3xl rounded-2xl bg-gradient-to-b from-slate-700 via-slate-800 to-slate-950 p-2.5 sm:p-3.5 shadow-2xl border border-slate-700/60 ring-1 ring-white/10"
+        >
           {/* Laptop Screen Bezel */}
           <div className="rounded-xl overflow-hidden bg-[#070b14] border border-slate-800/90 shadow-inner">
             {/* Top Bar / Browser chrome */}
@@ -234,10 +244,20 @@ export const HeroMockups: React.FC = () => {
 
           {/* Laptop Base Hinge */}
           <div className="h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-b-xl mt-1 shadow-md" />
-        </div>
+        </motion.div>
 
-        {/* Floating Mobile Companion Mockup: Android / iOS Native Field App (Left Side on Desktop) */}
-        <div className="hidden lg:block absolute -bottom-8 -left-8 w-60 rounded-3xl bg-slate-900 border-2 border-slate-700/80 p-2 shadow-2xl backdrop-blur-xl ring-1 ring-cyan-500/20">
+        {/* Floating Mobile Companion Mockup with continuous floating animation */}
+        <motion.div
+          animate={{
+            y: [-5, 5, -5],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="hidden lg:block absolute -bottom-8 -left-8 w-60 rounded-3xl bg-slate-900 border-2 border-slate-700/80 p-2 shadow-2xl backdrop-blur-xl ring-1 ring-cyan-500/20"
+        >
           <div className="rounded-[20px] bg-[#070c17] p-3 text-slate-200 border border-slate-800">
             {/* Phone Status Bar */}
             <div className="flex items-center justify-between text-[9px] text-slate-400 pb-2 border-b border-slate-800/80 mb-2">
@@ -287,10 +307,20 @@ export const HeroMockups: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Floating Tablet / Enterprise Portal Mockup (Right Side on Desktop) */}
-        <div className="hidden lg:block absolute -bottom-6 -right-8 w-64 rounded-2xl bg-slate-900 border-2 border-slate-700/80 p-2.5 shadow-2xl backdrop-blur-xl ring-1 ring-indigo-500/20">
+        {/* Floating Tablet / Enterprise Portal Mockup with continuous floating animation */}
+        <motion.div
+          animate={{
+            y: [5, -5, 5],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="hidden lg:block absolute -bottom-6 -right-8 w-64 rounded-2xl bg-slate-900 border-2 border-slate-700/80 p-2.5 shadow-2xl backdrop-blur-xl ring-1 ring-indigo-500/20"
+        >
           <div className="rounded-xl bg-[#080d19] p-3 text-slate-200 border border-slate-800">
             <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 mb-2">
               <span className="text-[10px] font-bold text-white flex items-center gap-1">
@@ -318,7 +348,7 @@ export const HeroMockups: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Trust labels under mockups */}
@@ -340,6 +370,7 @@ export const HeroMockups: React.FC = () => {
           <span>SaaS Analytics Dashboards</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
+
