@@ -5,6 +5,8 @@ import { useData } from '../context/DataContext';
 import { ClientItem, LeadItem } from '../types';
 import { SEO } from '../components/common/SEO';
 import { COMPANY_INFO } from '../data/companyData';
+import { AdminPricingTab } from '../components/admin/AdminPricingTab';
+import { AdminSaaSTab } from '../components/admin/AdminSaaSTab';
 import {
   Shield,
   Lock,
@@ -44,6 +46,10 @@ import {
   ShieldCheck,
   Check,
   AlertTriangle,
+  Percent,
+  Tag,
+  Coins,
+  BadgePercent,
 } from 'lucide-react';
 
 
@@ -52,6 +58,8 @@ export const AdminPage: React.FC = () => {
   const {
     clients,
     leads,
+    packages,
+    discountSettings,
     isAdminAuthenticated,
     adminLogin,
     adminLogout,
@@ -69,8 +77,9 @@ export const AdminPage: React.FC = () => {
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState(false);
 
-  // Active Admin Tab: 'dashboard' | 'clients' | 'leads' | 'demos'
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'clients' | 'leads' | 'demos'>('dashboard');
+  // Active Admin Tab: 'dashboard' | 'saas' | 'clients' | 'leads' | 'pricing' | 'demos'
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'saas' | 'clients' | 'leads' | 'pricing' | 'demos'>('dashboard');
+
 
   // Client Management State
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
@@ -529,6 +538,18 @@ export const AdminPage: React.FC = () => {
               </button>
 
               <button
+                onClick={() => setActiveTab('saas')}
+                className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'saas'
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold shadow-sm'
+                    : 'text-slate-400 hover:text-cyan-300'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>SaaS Ecosystem</span>
+              </button>
+
+              <button
                 onClick={() => setActiveTab('clients')}
                 className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                   activeTab === 'clients'
@@ -556,7 +577,25 @@ export const AdminPage: React.FC = () => {
                   </span>
                 )}
               </button>
+
+              <button
+                onClick={() => setActiveTab('pricing')}
+                className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'pricing'
+                    ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black shadow-sm'
+                    : 'text-slate-400 hover:text-emerald-300'
+                }`}
+              >
+                <Percent className="w-3.5 h-3.5" />
+                <span>Pricing & % Offers</span>
+                {discountSettings.isEnabled && (
+                  <span className="px-1.5 py-0.2 rounded-full bg-emerald-400 text-slate-950 text-[10px] font-bold animate-pulse">
+                    {discountSettings.percentage}%
+                  </span>
+                )}
+              </button>
             </div>
+
 
             {/* Right: View Live Website + Logout */}
             <div className="flex items-center gap-2.5">
@@ -606,9 +645,20 @@ export const AdminPage: React.FC = () => {
             >
               Leads & CRM ({leads.length})
             </button>
+            <button
+              onClick={() => setActiveTab('pricing')}
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+                activeTab === 'pricing'
+                  ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950'
+                  : 'text-slate-400'
+              }`}
+            >
+              Pricing & % Offers
+            </button>
           </div>
         </div>
       </header>
+
 
       {/* Main Admin Workspace */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -1197,12 +1247,21 @@ export const AdminPage: React.FC = () => {
                         )}
                       </td>
 
-                      {/* Source */}
+                      {/* Source & Payment Status */}
                       <td className="py-4 px-4">
-                        <span className="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-[10px] text-slate-300 font-mono">
-                          {lead.source}
-                        </span>
+                        <div className="space-y-1">
+                          <span className="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-[10px] text-slate-300 font-mono block w-max">
+                            {lead.source}
+                          </span>
+                          {lead.paymentStatus === 'Paid Token' && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono text-[10px] font-bold">
+                              <CheckCircle2 className="w-3 h-3" />
+                              <span>₹{lead.paidAmount?.toLocaleString() || 'Token'} Paid</span>
+                            </span>
+                          )}
+                        </div>
                       </td>
+
 
                       {/* Status Badge */}
                       <td className="py-4 px-4">
@@ -1280,7 +1339,18 @@ export const AdminPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* ====================================================
+            TAB: SAAS CLOUD ECOSYSTEM
+        ==================================================== */}
+        {activeTab === 'saas' && <AdminSaaSTab />}
+
+        {/* ====================================================
+            TAB 4: PRICING PACKAGES & OCCASIONAL OFFERS
+        ==================================================== */}
+        {activeTab === 'pricing' && <AdminPricingTab />}
       </main>
+
 
       {/* ====================================================
           MODAL: ADD / EDIT CLIENT PROJECT
@@ -1592,6 +1662,36 @@ export const AdminPage: React.FC = () => {
 
               {/* Lead Details Body */}
               <div className="space-y-4 text-xs">
+                {/* Direct Online Payment / Token Details */}
+                {selectedLead.paymentStatus && (
+                  <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-emerald-400 font-bold flex items-center gap-1.5 text-xs uppercase font-mono">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Online Token Booking Verified
+                      </span>
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold text-xs">
+                        ₹{selectedLead.paidAmount?.toLocaleString()} INR
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-[11px] pt-1 text-slate-300 font-mono">
+                      <div>
+                        <span className="text-slate-400">Package:</span>{' '}
+                        <strong className="text-white">{selectedLead.packageSelected || 'Custom Scope'}</strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-400">Mode:</span>{' '}
+                        <strong className="text-cyan-300">{selectedLead.paymentMethod || 'UPI QR'}</strong>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-slate-400">Transaction / UTR Ref:</span>{' '}
+                        <strong className="text-emerald-300">{selectedLead.transactionRef || 'Direct Checkout'}</strong>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
                   <div className="text-slate-400 font-medium">Service Required:</div>
                   <div className="font-bold text-white text-sm text-cyan-300">
@@ -1603,6 +1703,7 @@ export const AdminPage: React.FC = () => {
                     </div>
                   )}
                 </div>
+
 
                 <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
                   <div className="text-slate-400 font-medium mb-1">Project Brief / Inbound Message:</div>

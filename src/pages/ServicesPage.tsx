@@ -92,15 +92,25 @@ export const ServicesPage: React.FC = () => {
                   </p>
 
                   <div className="pt-2">
-                    <button
-                      onClick={() => navigate(`/services/${service.slug}`)}
-                      className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors inline-flex items-center gap-2 cursor-pointer shadow-md"
-                    >
-                      <span>View Full Service Deep Dive & Specs</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <div className="flex flex-wrap gap-2.5">
+                      <button
+                        onClick={() => navigate(`/services/${service.slug}`)}
+                        className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer shadow-md"
+                      >
+                        <span>Full Service Specs</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        onClick={() => navigate('/pricing')}
+                        className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <span>Packages & Pricing</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
+
 
                 {/* Right Benefits & Features Grid */}
                 <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">

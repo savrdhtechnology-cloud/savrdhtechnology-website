@@ -159,7 +159,7 @@ export const Modals: React.FC = () => {
                   onClick={() => {
                     setOpenLoginModal(false);
                     setLoginSubmitted(false);
-                    navigate(loginPortalType === 'fieldsure' ? '/products/fieldsure' : '/work');
+                    navigate('/dashboard');
                   }}
                   className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
                 >
@@ -313,15 +313,28 @@ export const Modals: React.FC = () => {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => {
-                    setOpenDemoModal(false);
-                    setDemoSubmitted(false);
-                  }}
-                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                >
-                  Close Window
-                </button>
+                <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                  <button
+                    onClick={() => {
+                      setOpenDemoModal(false);
+                      setDemoSubmitted(false);
+                      navigate('/demo/fieldsure');
+                    }}
+                    className="flex-1 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:brightness-110 text-white rounded-lg text-xs font-bold transition-all shadow-lg shadow-cyan-600/30 flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Launch Live Interactive Sandbox</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOpenDemoModal(false);
+                      setDemoSubmitted(false);
+                    }}
+                    className="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </div>
               </motion.div>
             ) : (
               <form onSubmit={handleDemoSubmit} className="space-y-3.5">

@@ -155,9 +155,27 @@ export const Footer: React.FC = () => {
           {/* Products Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Products & Demos
+              SaaS & Products
             </h4>
             <ul className="space-y-2 text-xs">
+              <li>
+                <button
+                  onClick={() => navigate('/products')}
+                  className="hover:text-cyan-400 transition-colors text-left flex items-center gap-1 group font-semibold text-cyan-300"
+                >
+                  <ChevronRight className="w-3 h-3 text-cyan-500 group-hover:text-cyan-400 transition-colors" />
+                  <span>SaaS Marketplace (7 Apps)</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('/demo')}
+                  className="hover:text-cyan-400 transition-colors text-left flex items-center gap-1 group text-slate-300"
+                >
+                  <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                  <span>Live Interactive Sandbox Hub</span>
+                </button>
+              </li>
               <li>
                 <button
                   onClick={() => navigate('/products/fieldsure')}
@@ -166,35 +184,17 @@ export const Footer: React.FC = () => {
                   <ChevronRight className="w-3 h-3 text-cyan-500 group-hover:text-cyan-400 transition-colors mt-0.5" />
                   <div>
                     <span>FieldSure™ SaaS</span>
-                    <span className="block text-[10px] text-cyan-400/80">Flagship Workforce App</span>
+                    <span className="block text-[10px] text-cyan-400/80">GPS Tracking & Verification</span>
                   </div>
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => navigate('/downloads')}
-                  className="hover:text-cyan-400 transition-colors text-left flex items-center gap-1 group font-semibold text-cyan-300"
+                  onClick={() => navigate('/dashboard')}
+                  className="hover:text-indigo-400 transition-colors text-left flex items-center gap-1 group text-indigo-300 font-semibold"
                 >
-                  <ChevronRight className="w-3 h-3 text-cyan-500 group-hover:text-cyan-400 transition-colors" />
-                  <span>Download Center & APKs</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate('/products')}
-                  className="hover:text-blue-400 transition-colors text-left flex items-center gap-1 group"
-                >
-                  <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 transition-colors" />
-                  <span>OpsEngine Enterprise</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate('/products')}
-                  className="hover:text-blue-400 transition-colors text-left flex items-center gap-1 group"
-                >
-                  <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 transition-colors" />
-                  <span>Custom Enterprise Solutions</span>
+                  <ChevronRight className="w-3 h-3 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
+                  <span>Customer Portal & Licenses</span>
                 </button>
               </li>
             </ul>
@@ -208,6 +208,15 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs">
               <li>
                 <button
+                  onClick={() => navigate('/pricing')}
+                  className="hover:text-cyan-400 transition-colors flex items-center gap-1 group font-semibold text-cyan-300"
+                >
+                  <ChevronRight className="w-3 h-3 text-cyan-500 group-hover:text-cyan-400 transition-colors" />
+                  <span>Packages & Pricing</span>
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => navigate('/about')}
                   className="hover:text-blue-400 transition-colors flex items-center gap-1 group"
                 >
@@ -215,6 +224,7 @@ export const Footer: React.FC = () => {
                   <span>About Savrdh</span>
                 </button>
               </li>
+
               <li>
                 <button
                   onClick={() => navigate('/work')}

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { PricingPackage } from '../types';
 
 interface NavigationContextType {
   currentPath: string;
@@ -9,6 +10,11 @@ interface NavigationContextType {
   setOpenDemoModal: (open: boolean) => void;
   openProjectModal: boolean;
   setOpenProjectModal: (open: boolean) => void;
+  openBookingModal: boolean;
+  setOpenBookingModal: (open: boolean) => void;
+  selectedBookingPackage: PricingPackage | null;
+  setSelectedBookingPackage: (pkg: PricingPackage | null) => void;
+  openPackageBooking: (pkg?: PricingPackage | null) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -31,6 +37,15 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
   const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
   const [openDemoModal, setOpenDemoModal] = useState<boolean>(false);
   const [openProjectModal, setOpenProjectModal] = useState<boolean>(false);
+  const [openBookingModal, setOpenBookingModal] = useState<boolean>(false);
+  const [selectedBookingPackage, setSelectedBookingPackage] = useState<PricingPackage | null>(null);
+
+  const openPackageBooking = (pkg?: PricingPackage | null) => {
+    if (pkg) {
+      setSelectedBookingPackage(pkg);
+    }
+    setOpenBookingModal(true);
+  };
 
   useEffect(() => {
     const handlePopState = () => {
@@ -66,12 +81,18 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
         setOpenDemoModal,
         openProjectModal,
         setOpenProjectModal,
+        openBookingModal,
+        setOpenBookingModal,
+        selectedBookingPackage,
+        setSelectedBookingPackage,
+        openPackageBooking,
       }}
     >
       {children}
     </NavigationContext.Provider>
   );
 };
+
 
 export const useNavigation = () => {
   const context = useContext(NavigationContext);

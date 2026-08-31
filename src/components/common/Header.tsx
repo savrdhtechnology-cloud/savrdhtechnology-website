@@ -246,26 +246,44 @@ export const Header: React.FC = () => {
                               FieldSure™
                             </span>
                             <span className="text-[9px] px-2 py-0.5 rounded-full bg-blue-500/20 text-cyan-300 border border-blue-500/30 font-semibold uppercase">
-                              Flagship SaaS
+                              Live Tracking SaaS
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-400 line-clamp-2">
-                            Smart field workforce management with GPS geofencing, route timeline and NOC map.
+                            Field workforce management with GPS geofencing, route timeline and NOC map.
                           </p>
                         </button>
 
-                        <div className="space-y-0.5">
+                        <div className="space-y-0.5 max-h-64 overflow-y-auto">
+                          {[
+                            { name: 'Savrdh CRM', slug: 'savrdh-crm', cat: 'Sales & Lead Pipelines' },
+                            { name: 'Savrdh Partner', slug: 'savrdh-partner', cat: 'Affiliate & Multi-Tier Channel' },
+                            { name: 'Savrdh Credit', slug: 'savrdh-credit', cat: 'Loan Underwriting & Verification' },
+                            { name: 'Savrdh ERP', slug: 'savrdh-erp', cat: 'Manufacturing & Inventory' },
+                            { name: 'Savrdh AI', slug: 'savrdh-ai', cat: 'GenAI & Intelligent OCR' },
+                            { name: 'Savrdh Quant', slug: 'savrdh-quant', cat: 'Algorithmic Financial Models' },
+                          ].map((p) => (
+                            <button
+                              key={p.slug}
+                              onClick={() => handleNav(`/products/${p.slug}`)}
+                              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-slate-800/70 text-left transition-colors group cursor-pointer"
+                            >
+                              <div>
+                                <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-400">
+                                  {p.name}
+                                </div>
+                                <div className="text-[10px] text-slate-500">{p.cat}</div>
+                              </div>
+                              <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-cyan-400" />
+                            </button>
+                          ))}
+
                           <button
-                            onClick={() => handleNav('/products')}
-                            className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800/70 text-left transition-colors group cursor-pointer"
+                            onClick={() => handleNav('/demo')}
+                            className="w-full mt-1 p-2 rounded-lg bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/20 text-center text-xs font-bold text-cyan-300 flex items-center justify-center gap-1.5 cursor-pointer"
                           >
-                            <div className="flex items-center gap-2">
-                              <Cpu className="w-4 h-4 text-violet-400" />
-                              <span className="text-xs font-medium text-slate-300 group-hover:text-white">
-                                Upcoming Products & Custom
-                              </span>
-                            </div>
-                            <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                            <Sparkles className="w-3.5 h-3.5" />
+                            <span>Launch Live Demos Hub</span>
                           </button>
                         </div>
                       </div>
@@ -287,6 +305,20 @@ export const Header: React.FC = () => {
                 Our Work
               </button>
 
+              {/* Pricing & Packages */}
+              <button
+                id="nav-pricing-btn"
+                onClick={() => handleNav('/pricing')}
+                className={`px-3.5 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+                  currentPath === '/pricing'
+                    ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/20'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                }`}
+              >
+                <span>Pricing</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">₹ Direct</span>
+              </button>
+
               {/* Downloads */}
               <button
                 id="nav-downloads-btn"
@@ -300,6 +332,7 @@ export const Header: React.FC = () => {
                 <span>Downloads</span>
                 <span className="text-[9px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-mono">Demo</span>
               </button>
+
 
               {/* About */}
               <button
@@ -353,11 +386,11 @@ export const Header: React.FC = () => {
                 id="client-login-header-btn"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => setOpenLoginModal(true)}
+                onClick={() => handleNav('/dashboard')}
                 className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 transition-all shadow-sm cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5 text-blue-400" />
-                <span>Client Login</span>
+                <span>Client Portal</span>
               </motion.button>
 
               {/* Start a Project CTA Button */}
@@ -504,6 +537,19 @@ export const Header: React.FC = () => {
                 </button>
 
                 <button
+                  onClick={() => handleNav('/pricing')}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+                    currentPath === '/pricing' ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-200 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span>Pricing & Packages</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">₹ Online</span>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-500" />
+                </button>
+
+                <button
                   onClick={() => handleNav('/downloads')}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
                     currentPath === '/downloads' ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-200 hover:bg-slate-800/60'
@@ -515,6 +561,7 @@ export const Header: React.FC = () => {
                   </div>
                   <ArrowRight className="w-4 h-4 text-slate-500" />
                 </button>
+
 
                 <button
                   onClick={() => handleNav('/about')}
@@ -549,10 +596,7 @@ export const Header: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setOpenLoginModal(true);
-                  }}
+                  onClick={() => handleNav('/dashboard')}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-slate-800 bg-slate-900 text-slate-200 text-xs font-semibold"
                 >
                   <LogIn className="w-4 h-4 text-blue-400" />

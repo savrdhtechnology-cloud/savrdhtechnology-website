@@ -4,8 +4,10 @@ import { HeroSection } from '../components/home/HeroSection';
 import { ServicesSection } from '../components/home/ServicesSection';
 import { TechnologySection } from '../components/home/TechnologySection';
 import { FieldSureSection } from '../components/home/FieldSureSection';
-import { ProcessSection } from '../components/home/ProcessSection';
+import { ClientJourneySection } from '../components/home/ClientJourneySection';
+import { PricingPreviewSection } from '../components/home/PricingPreviewSection';
 import { WhyChooseUsSection } from '../components/home/WhyChooseUsSection';
+
 import { ProductShowcase } from '../components/home/ProductShowcase';
 import { WorkSection } from '../components/home/WorkSection';
 import { ClientsSection } from '../components/home/ClientsSection';
@@ -35,11 +37,15 @@ export const HomePage: React.FC = () => {
       {/* 4. Technology Capabilities Section */}
       <TechnologySection />
 
-      {/* 5. Development Process Section */}
-      <ProcessSection />
+      {/* 5. Animated Client Journey & How We Work Section */}
+      <ClientJourneySection />
 
-      {/* 6. Why Choose Us Section */}
+      {/* 6. Pricing Packages & Direct Online Booking Section */}
+      <PricingPreviewSection />
+
+      {/* 7. Why Choose Us Section */}
       <WhyChooseUsSection />
+
 
       {/* 7. Product Showcase */}
       <ProductShowcase />

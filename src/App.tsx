@@ -11,15 +11,25 @@ import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
 import { ServiceDetailPage } from './pages/ServiceDetailPage';
 import { ProductsPage } from './pages/ProductsPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
 import { FieldSurePage } from './pages/FieldSurePage';
+import { LiveDemoHubPage } from './pages/LiveDemoHubPage';
+import { LiveProductDemoPage } from './pages/LiveProductDemoPage';
+import { CustomerAuthPage } from './pages/CustomerAuthPage';
+import { CustomerDashboardPage } from './pages/CustomerDashboardPage';
+import { FreeTrialPage } from './pages/FreeTrialPage';
+import { CheckoutPage } from './pages/CheckoutPage';
 import { WorkPage } from './pages/WorkPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { DownloadsPage } from './pages/DownloadsPage';
+import { PricingPage } from './pages/PricingPage';
 import { AdminPage } from './pages/AdminPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { PaymentCheckoutModal } from './components/common/PaymentCheckoutModal';
+
 
 const AppContent: React.FC = () => {
   const { currentPath } = useNavigation();
@@ -47,42 +57,100 @@ const AppContent: React.FC = () => {
       return <ServiceDetailPage slug={slug} />;
     }
 
-    // 4. Products
+    // 4. Products Root
     if (currentPath === '/products') {
       return <ProductsPage />;
     }
 
-    // 5. Flagship FieldSure Product Page
+    // 5. Flagship FieldSure Dedicated Product Page
     if (currentPath === '/products/fieldsure') {
       return <FieldSurePage />;
     }
 
-    // 6. Downloads & Product Demos
+    // 6. Generic Product Detail Pages (/products/:slug)
+    if (currentPath.startsWith('/products/')) {
+      const slug = currentPath.replace('/products/', '');
+      return <ProductDetailPage slug={slug} />;
+    }
+
+    // 7. Interactive Live Demos Hub
+    if (currentPath === '/demo' || currentPath === '/demos') {
+      return <LiveDemoHubPage />;
+    }
+
+    // 8. Interactive Live Sandbox Product Demos (/demo/:slug or /demos/:slug)
+    if (currentPath.startsWith('/demo/')) {
+      const slug = currentPath.replace('/demo/', '');
+      return <LiveProductDemoPage slug={slug} />;
+    }
+    if (currentPath.startsWith('/demos/')) {
+      const slug = currentPath.replace('/demos/', '');
+      return <LiveProductDemoPage slug={slug} />;
+    }
+
+    // 9. Client & Customer Portal Dashboard
+    if (
+      currentPath === '/dashboard' ||
+      currentPath === '/client-portal' ||
+      currentPath === '/portal' ||
+      currentPath === '/customer-dashboard'
+    ) {
+      return <CustomerDashboardPage />;
+    }
+
+    // 10. Client & Customer Authentication (Login / Signup)
+    if (
+      currentPath === '/login' ||
+      currentPath === '/auth' ||
+      currentPath === '/signin' ||
+      currentPath === '/signup' ||
+      currentPath === '/client-login' ||
+      currentPath === '/customer-login'
+    ) {
+      return <CustomerAuthPage />;
+    }
+
+    // 11. SaaS Free Trial Provisioning
+    if (currentPath === '/free-trial' || currentPath === '/trial') {
+      return <FreeTrialPage />;
+    }
+
+    // 12. Checkout & Subscriptions
+    if (currentPath === '/checkout') {
+      return <CheckoutPage />;
+    }
+
+    // 13. Downloads & Product Demos APK Center
     if (currentPath === '/downloads') {
       return <DownloadsPage />;
     }
 
-    // 7. Portfolio / Work
-    if (currentPath === '/work') {
+    // 14. Portfolio / Work
+    if (currentPath === '/work' || currentPath === '/portfolio') {
       return <WorkPage />;
     }
 
-    // 8. About Company
+    // 15. About Company
     if (currentPath === '/about') {
       return <AboutPage />;
     }
 
-    // 9. Contact
+    // 16. Contact & Enquiries
     if (currentPath === '/contact') {
       return <ContactPage />;
     }
 
-    // 10. Admin Portal
+    // 17. Pricing & Packages
+    if (currentPath === '/pricing') {
+      return <PricingPage />;
+    }
+
+    // 18. Admin Portal
     if (currentPath === '/admin') {
       return <AdminPage />;
     }
 
-    // 11. Legal Pages
+    // 19. Legal Pages
     if (currentPath === '/privacy-policy') {
       return <PrivacyPolicyPage />;
     }
@@ -90,7 +158,7 @@ const AppContent: React.FC = () => {
       return <TermsPage />;
     }
 
-    // 12. 404 Fallback
+    // 20. 404 Fallback
     return <NotFoundPage />;
   };
 
@@ -122,6 +190,9 @@ const AppContent: React.FC = () => {
 
       {/* Global Modals (Login & FieldSure Demo) */}
       <Modals />
+      
+      {/* Interactive Direct Package & Consultation Payment Checkout Modal */}
+      <PaymentCheckoutModal />
     </div>
   );
 };
