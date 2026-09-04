@@ -10,8 +10,9 @@ import {
   CustomerInvoice,
   SupportTicket,
   DemoSession,
+  DownloadItem,
 } from '../types';
-import { CLIENTS_DATA, PRICING_PACKAGES, DEFAULT_DISCOUNT_CAMPAIGN } from '../data/companyData';
+import { CLIENTS_DATA, PRICING_PACKAGES, DEFAULT_DISCOUNT_CAMPAIGN, DOWNLOADS_DATA } from '../data/companyData';
 import {
   SAAS_PRODUCTS,
   INITIAL_CUSTOMER_ACCOUNTS,
@@ -98,6 +99,14 @@ interface DataContextType {
   deletePackage: (id: string) => void;
   resetPackagesToDefault: () => void;
   updateDiscountSettings: (settings: Partial<DiscountCampaign>) => void;
+
+  // Downloads Management
+  downloads: DownloadItem[];
+  addDownloadItem: (item: Omit<DownloadItem, 'id'>) => DownloadItem;
+  updateDownloadItem: (id: string, item: Partial<DownloadItem>) => void;
+  deleteDownloadItem: (id: string) => void;
+  resetDownloadsToDefault: () => void;
+
   getDiscountedPrice: (originalPrice: number) => {
     discountedPrice: number;
     discountAmount: number;
@@ -199,6 +208,7 @@ const SUBSCRIPTIONS_KEY = 'savrdh_subscriptions_data_v3';
 const INVOICES_KEY = 'savrdh_invoices_data_v3';
 const TICKETS_KEY = 'savrdh_tickets_data_v3';
 const TRIAL_DAYS_KEY = 'savrdh_trial_days_v3';
+const DOWNLOADS_STORAGE_KEY = 'savrdh_downloads_data_v4';
 
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Clients state
@@ -313,6 +323,17 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Demo sessions
   const [demoSessions, setDemoSessions] = useState<DemoSession[]>([]);
 
+  // Downloads state
+  const [downloads, setDownloads] = useState<DownloadItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(DOWNLOADS_STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Error reading downloads', e);
+    }
+    return DOWNLOADS_DATA;
+  });
+
   // Admin Auth state
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
     try {
@@ -370,6 +391,10 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     localStorage.setItem(TICKETS_KEY, JSON.stringify(supportTickets));
   }, [supportTickets]);
+
+  useEffect(() => {
+    localStorage.setItem(DOWNLOADS_STORAGE_KEY, JSON.stringify(downloads));
+  }, [downloads]);
 
   useEffect(() => {
     localStorage.setItem(ADMIN_AUTH_KEY, isAdminAuthenticated ? 'true' : 'false');
@@ -836,6 +861,32 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setPackages(PRICING_PACKAGES);
   };
 
+  // Downloads management functions
+  const addDownloadItem = (itemData: Omit<DownloadItem, 'id'>): DownloadItem => {
+    const newId = `dl-${Date.now()}`;
+    const newItem: DownloadItem = {
+      ...itemData,
+      id: newId,
+    };
+    setDownloads((prev) => [newItem, ...prev]);
+    return newItem;
+  };
+
+  const updateDownloadItem = (id: string, itemData: Partial<DownloadItem>) => {
+    setDownloads((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...itemData } : item))
+    );
+  };
+
+  const deleteDownloadItem = (id: string) => {
+    setDownloads((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const resetDownloadsToDefault = () => {
+    setDownloads(DOWNLOADS_DATA);
+    localStorage.removeItem(DOWNLOADS_STORAGE_KEY);
+  };
+
   // Discount calculation
   const updateDiscountSettings = (settings: Partial<DiscountCampaign>) => {
     setDiscountSettings((prev) => ({ ...prev, ...settings }));
@@ -928,6 +979,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         deletePackage,
         resetPackagesToDefault,
         updateDiscountSettings,
+        downloads,
+        addDownloadItem,
+        updateDownloadItem,
+        deleteDownloadItem,
+        resetDownloadsToDefault,
         getDiscountedPrice,
         getDiscountedPriceRange,
       }}

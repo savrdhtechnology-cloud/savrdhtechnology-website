@@ -7,6 +7,7 @@ import { SEO } from '../components/common/SEO';
 import { COMPANY_INFO } from '../data/companyData';
 import { AdminPricingTab } from '../components/admin/AdminPricingTab';
 import { AdminSaaSTab } from '../components/admin/AdminSaaSTab';
+import { AdminDownloadsTab } from '../components/admin/AdminDownloadsTab';
 import {
   Shield,
   Lock,
@@ -60,6 +61,7 @@ export const AdminPage: React.FC = () => {
     leads,
     packages,
     discountSettings,
+    downloads,
     isAdminAuthenticated,
     adminLogin,
     adminLogout,
@@ -77,8 +79,8 @@ export const AdminPage: React.FC = () => {
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState(false);
 
-  // Active Admin Tab: 'dashboard' | 'saas' | 'clients' | 'leads' | 'pricing' | 'demos'
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'saas' | 'clients' | 'leads' | 'pricing' | 'demos'>('dashboard');
+  // Active Admin Tab: 'dashboard' | 'saas' | 'clients' | 'leads' | 'pricing' | 'downloads'
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'saas' | 'clients' | 'leads' | 'pricing' | 'downloads'>('dashboard');
 
 
   // Client Management State
@@ -594,6 +596,18 @@ export const AdminPage: React.FC = () => {
                   </span>
                 )}
               </button>
+
+              <button
+                onClick={() => setActiveTab('downloads')}
+                className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'downloads'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-sm'
+                    : 'text-slate-400 hover:text-cyan-300'
+                }`}
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Downloads & APKs ({downloads.length})</span>
+              </button>
             </div>
 
 
@@ -654,6 +668,16 @@ export const AdminPage: React.FC = () => {
               }`}
             >
               Pricing & % Offers
+            </button>
+            <button
+              onClick={() => setActiveTab('downloads')}
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+                activeTab === 'downloads'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white'
+                  : 'text-slate-400'
+              }`}
+            >
+              Downloads ({downloads.length})
             </button>
           </div>
         </div>
@@ -1349,6 +1373,11 @@ export const AdminPage: React.FC = () => {
             TAB 4: PRICING PACKAGES & OCCASIONAL OFFERS
         ==================================================== */}
         {activeTab === 'pricing' && <AdminPricingTab />}
+
+        {/* ====================================================
+            TAB 5: CUSTOMER APPLICATION & APK DOWNLOADS
+        ==================================================== */}
+        {activeTab === 'downloads' && <AdminDownloadsTab />}
       </main>
 
 

@@ -319,21 +319,6 @@ export const Header: React.FC = () => {
                 <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">₹ Direct</span>
               </button>
 
-              {/* Downloads */}
-              <button
-                id="nav-downloads-btn"
-                onClick={() => handleNav('/downloads')}
-                className={`px-3.5 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
-                  currentPath === '/downloads'
-                    ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/20'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-                }`}
-              >
-                <span>Downloads</span>
-                <span className="text-[9px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-mono">Demo</span>
-              </button>
-
-
               {/* About */}
               <button
                 id="nav-about-btn"
@@ -346,7 +331,6 @@ export const Header: React.FC = () => {
               >
                 About
               </button>
-
 
               {/* Contact */}
               <button
@@ -364,23 +348,6 @@ export const Header: React.FC = () => {
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-2.5">
-              {/* Admin Portal Button */}
-              <motion.button
-                id="admin-portal-header-btn"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => handleNav('/admin')}
-                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border transition-all shadow-sm cursor-pointer ${
-                  currentPath === '/admin'
-                    ? 'bg-blue-600/30 text-cyan-300 border-cyan-500/50'
-                    : 'text-slate-300 hover:text-cyan-300 border-slate-800 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-800/80'
-                }`}
-                title="Admin Control Center"
-              >
-                <Shield className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Admin</span>
-              </motion.button>
-
               {/* Client Login Button */}
               <motion.button
                 id="client-login-header-btn"
@@ -390,7 +357,7 @@ export const Header: React.FC = () => {
                 className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 transition-all shadow-sm cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5 text-blue-400" />
-                <span>Client Portal</span>
+                <span>Client Login</span>
               </motion.button>
 
               {/* Start a Project CTA Button */}
@@ -550,20 +517,6 @@ export const Header: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() => handleNav('/downloads')}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
-                    currentPath === '/downloads' ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-200 hover:bg-slate-800/60'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span>Downloads & Demos</span>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">APKs</span>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-slate-500" />
-                </button>
-
-
-                <button
                   onClick={() => handleNav('/about')}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
                     currentPath === '/about' ? 'bg-blue-600/20 text-blue-400' : 'text-slate-200 hover:bg-slate-800/60'
@@ -572,7 +525,6 @@ export const Header: React.FC = () => {
                   <span>About Us</span>
                   <ArrowRight className="w-4 h-4 text-slate-500" />
                 </button>
-
 
                 <button
                   onClick={() => handleNav('/contact')}
@@ -587,14 +539,6 @@ export const Header: React.FC = () => {
 
               {/* Mobile Actions */}
               <div className="pt-4 space-y-2 border-t border-slate-800">
-                <button
-                  onClick={() => handleNav('/admin')}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-slate-800 bg-slate-900/90 text-cyan-300 text-xs font-semibold"
-                >
-                  <Shield className="w-4 h-4 text-cyan-400" />
-                  <span>Admin Control Center</span>
-                </button>
-
                 <button
                   onClick={() => handleNav('/dashboard')}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-slate-800 bg-slate-900 text-slate-200 text-xs font-semibold"

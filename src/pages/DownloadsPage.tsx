@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigation } from '../context/NavigationContext';
-import { DOWNLOADS_DATA, COMPANY_INFO } from '../data/companyData';
+import { useData } from '../context/DataContext';
+import { COMPANY_INFO } from '../data/companyData';
 import { DownloadItem } from '../types';
 import { SEO } from '../components/common/SEO';
 import {
@@ -24,11 +25,15 @@ import {
   Lock,
   Cpu,
   Tv2,
+  Search,
 } from 'lucide-react';
 
 export const DownloadsPage: React.FC = () => {
   const { navigate, setOpenDemoModal } = useNavigation();
+  const { downloads } = useData();
+  const [selectedProduct, setSelectedProduct] = useState<string>('All Products');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [downloadingItem, setDownloadingItem] = useState<DownloadItem | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<number>(0);
@@ -43,10 +48,27 @@ export const DownloadsPage: React.FC = () => {
     'Product Brochure',
   ];
 
-  const filteredDownloads =
-    selectedCategory === 'All'
-      ? DOWNLOADS_DATA
-      : DOWNLOADS_DATA.filter((d) => d.category === selectedCategory);
+  // Derive unique product names from downloads
+  const productList = [
+    'All Products',
+    ...Array.from(new Set(downloads.map((d) => d.productName))),
+  ];
+
+  const filteredDownloads = downloads.filter((item) => {
+    const matchesProduct =
+      selectedProduct === 'All Products' || item.productName === selectedProduct;
+    const matchesCategory =
+      selectedCategory === 'All' || item.category === selectedCategory;
+    const matchesSearch =
+      searchQuery.trim() === '' ||
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.platform.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.downloadFileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.features.some((f) => f.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesProduct && matchesCategory && matchesSearch;
+  });
 
   const handleCopyChecksum = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -54,22 +76,67 @@ export const DownloadsPage: React.FC = () => {
     setTimeout(() => setCopiedId(null), 2500);
   };
 
+  const triggerActualFileDownload = (item: DownloadItem) => {
+    if (item.directDownloadUrl) {
+      window.open(item.directDownloadUrl, '_blank');
+      return;
+    }
+
+    // Generate real downloadable package manifest
+    const fileContent = `=====================================================
+SAVRDH TECHNOLOGIES - ENTERPRISE SOFTWARE PACKAGE
+=====================================================
+Application: ${item.title}
+Product: ${item.productName}
+Version: ${item.version}
+Platform: ${item.platform}
+Release Date: ${item.releaseDate}
+File Size: ${item.fileSize}
+File Name: ${item.downloadFileName}
+Cryptographic Checksum: ${item.checksum}
+
+KEY FEATURES:
+${item.features.map((f) => ` - ${f}`).join('\n')}
+
+INSTALLATION / SANDBOX INSTRUCTIONS:
+${item.instructions.map((ins, i) => ` ${i + 1}. ${ins}`).join('\n')}
+
+=====================================================
+OFFICIAL ENTERPRISE SUPPORT:
+Email: ${COMPANY_INFO.email}
+Phone: ${COMPANY_INFO.phone}
+Website: https://savrdh.com
+Registered Under: Savrdh Technologies Pvt Ltd
+=====================================================`;
+
+    const blob = new Blob([fileContent], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = item.downloadFileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleTriggerDownload = (item: DownloadItem) => {
     setDownloadingItem(item);
     setDownloadProgress(10);
     setDownloadCompleted(false);
 
-    // Simulate clean, progressive download sequence
+    // Simulate clean, progressive download sequence and dispatch file
     const interval = setInterval(() => {
       setDownloadProgress((prev) => {
         if (prev >= 95) {
           clearInterval(interval);
           setDownloadCompleted(true);
+          triggerActualFileDownload(item);
           return 100;
         }
-        return prev + 25;
+        return prev + 30;
       });
-    }, 250);
+    }, 200);
   };
 
   const getCategoryIcon = (category: string) => {
@@ -114,50 +181,168 @@ export const DownloadsPage: React.FC = () => {
               Enterprise Download Center
             </h1>
             <p className="text-base font-semibold text-cyan-300 mt-2">
-              Explore Live Product Demos, Mobile APKs, Developer SDKs & Technical Blueprints
+              Official Mobile APKs, Desktop Terminals, Web Suites & SDKs for All Savrdh Products
             </p>
 
             <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed">
-              Test drive our flagship <strong>FieldSure™ Enterprise SaaS</strong>, mobile field applications, operations video wall clients, and architectural whitepapers. All test packages run in isolated, secure demo sandboxes.
+              Explore and download verified software releases across the entire Savrdh portfolio — including <strong>Savrdh CRM</strong>, <strong>FieldSure™</strong>, <strong>Savrdh Credit</strong>, <strong>Savrdh ERP</strong>, <strong>Savrdh Partner</strong>, <strong>Savrdh AI</strong>, and <strong>Savrdh Quant</strong>. All packages include installation guides and SHA-256 verification.
             </p>
 
             {/* Quick Stat Highlights */}
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left max-w-4xl mx-auto">
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                <div className="text-xs text-slate-400">Available Demos</div>
-                <div className="text-lg font-bold text-white font-mono mt-0.5">6 Releases</div>
+                <div className="text-xs text-slate-400">Total Software Releases</div>
+                <div className="text-lg font-bold text-white font-mono mt-0.5">{downloads.length} Packages</div>
               </div>
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                <div className="text-xs text-slate-400">Sandbox Environment</div>
-                <div className="text-lg font-bold text-emerald-400 font-mono mt-0.5">Live & Active</div>
+                <div className="text-xs text-slate-400">Supported Platforms</div>
+                <div className="text-lg font-bold text-emerald-400 font-mono mt-0.5">Android / Win / Web</div>
               </div>
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                <div className="text-xs text-slate-400">Security Verification</div>
+                <div className="text-xs text-slate-400">Package Verification</div>
                 <div className="text-lg font-bold text-cyan-400 font-mono mt-0.5">SHA-256 Signed</div>
               </div>
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                <div className="text-xs text-slate-400">Demo Access</div>
-                <div className="text-lg font-bold text-indigo-400 font-mono mt-0.5">Instant Guest</div>
+                <div className="text-xs text-slate-400">Access Mode</div>
+                <div className="text-lg font-bold text-indigo-400 font-mono mt-0.5">Direct & Free</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                  selectedCategory === cat
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                    : 'bg-slate-900/90 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Search and Product Filters Container */}
+          <div className="mb-10 space-y-5">
+            {/* Search Input Bar */}
+            <div className="max-w-2xl mx-auto relative">
+              <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search APKs, products, platforms (e.g., 'CRM APK', 'ERP Scanner', 'Windows', 'SDK')..."
+                className="w-full pl-11 pr-10 py-3.5 rounded-xl bg-slate-900/90 border border-slate-800 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 text-white placeholder-slate-500 text-sm outline-none transition-all shadow-inner"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white rounded-md transition-colors cursor-pointer"
+                  title="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Product Selector Filter Pills */}
+            <div className="space-y-2">
+              <div className="text-center">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                  Filter By Product Line
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {productList.map((prod) => {
+                  const count =
+                    prod === 'All Products'
+                      ? downloads.length
+                      : downloads.filter((d) => d.productName === prod).length;
+                  const isSelected = selectedProduct === prod;
+                  return (
+                    <button
+                      key={prod}
+                      onClick={() => setSelectedProduct(prod)}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                        isSelected
+                          ? 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30'
+                          : 'bg-slate-900/90 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      }`}
+                    >
+                      <span>{prod}</span>
+                      <span
+                        className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                          isSelected
+                            ? 'bg-cyan-800/60 text-white'
+                            : 'bg-slate-800 text-slate-400'
+                        }`}
+                      >
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Category / Platform Type Filter Pills */}
+            <div className="space-y-2 pt-1">
+              <div className="text-center">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                  Filter By Category / Format
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                      selectedCategory === cat
+                        ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                        : 'bg-slate-950 border border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Results Count & Active Filters Indicator */}
+            <div className="flex items-center justify-between text-xs text-slate-400 max-w-7xl mx-auto px-1 pt-2 border-b border-slate-800/60 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-slate-200">
+                  Showing {filteredDownloads.length} of {downloads.length} downloads
+                </span>
+                {(selectedProduct !== 'All Products' ||
+                  selectedCategory !== 'All' ||
+                  searchQuery.trim() !== '') && (
+                  <button
+                    onClick={() => {
+                      setSelectedProduct('All Products');
+                      setSelectedCategory('All');
+                      setSearchQuery('');
+                    }}
+                    className="text-cyan-400 hover:underline text-xs ml-2 cursor-pointer"
+                  >
+                    Reset all filters
+                  </button>
+                )}
+              </div>
+              <div className="hidden sm:block text-slate-500 text-[11px]">
+                Click any item to inspect installation steps & SHA-256 hash
+              </div>
+            </div>
           </div>
+
+          {/* Empty State */}
+          {filteredDownloads.length === 0 && (
+            <div className="text-center py-16 px-4 rounded-2xl bg-slate-900/40 border border-slate-800 mb-16">
+              <Download className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+              <h3 className="text-lg font-bold text-white">No Downloads Found</h3>
+              <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                No software packages match your current search or category filter. Try clearing your filters to view all available products.
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedProduct('All Products');
+                  setSelectedCategory('All');
+                  setSearchQuery('');
+                }}
+                className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+              >
+                Show All Downloads
+              </button>
+            </div>
+          )}
 
           {/* Downloads Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
@@ -385,21 +570,32 @@ export const DownloadsPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
-                  <button
-                    onClick={() => {
-                      setDownloadingItem(null);
-                      if (downloadingItem.demoUrl) {
-                        navigate(downloadingItem.demoUrl);
-                      }
-                    }}
-                    className="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                  >
-                    Open Live Web Sandbox
-                  </button>
+                <div className="mt-6 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    {downloadCompleted && (
+                      <button
+                        onClick={() => triggerActualFileDownload(downloadingItem)}
+                        className="px-3.5 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download Again</span>
+                      </button>
+                    )}
+                    {downloadingItem.demoUrl && (
+                      <button
+                        onClick={() => {
+                          setDownloadingItem(null);
+                          navigate(downloadingItem.demoUrl!);
+                        }}
+                        className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                      >
+                        Open Live Web Sandbox
+                      </button>
+                    )}
+                  </div>
                   <button
                     onClick={() => setDownloadingItem(null)}
-                    className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold cursor-pointer"
+                    className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold cursor-pointer"
                   >
                     Done
                   </button>

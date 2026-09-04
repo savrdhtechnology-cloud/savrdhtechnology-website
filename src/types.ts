@@ -314,7 +314,6 @@ export interface DemoSession {
 }
 
 export interface DownloadItem {
-
   id: string;
   title: string;
   productName: string;
@@ -331,5 +330,7 @@ export interface DownloadItem {
   demoUrl?: string;
   architectureDiagram?: string;
   instructions: string[];
+  directDownloadUrl?: string;
+  isActive?: boolean;
 }
 

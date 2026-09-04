@@ -237,10 +237,10 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => navigate('/downloads')}
-                  className="hover:text-blue-400 transition-colors flex items-center gap-1 group"
+                  className="hover:text-cyan-400 transition-colors flex items-center gap-1 group font-semibold text-slate-300 hover:text-white"
                 >
-                  <ChevronRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 transition-colors" />
-                  <span>Product Demos & Whitepapers</span>
+                  <ChevronRight className="w-3 h-3 text-cyan-500 group-hover:text-cyan-400 transition-colors" />
+                  <span>Downloads</span>
                 </button>
               </li>
               <li>
@@ -310,11 +310,6 @@ export const Footer: React.FC = () => {
 
 
           <div className="flex items-center gap-4 text-slate-400 text-xs">
-            <button onClick={() => navigate('/admin')} className="hover:text-cyan-400 text-slate-400 flex items-center gap-1 font-mono text-[11px]">
-              <Shield className="w-3 h-3 text-cyan-400" />
-              <span>Admin Portal</span>
-            </button>
-            <span>•</span>
             <button onClick={() => navigate('/privacy-policy')} className="hover:text-slate-300">
               Privacy Policy
             </button>

@@ -55,6 +55,13 @@ export const CustomerDashboardPage: React.FC<CustomerDashboardPageProps> = ({ in
 
   const [activeTab, setActiveTab] = useState<string>(initialTab);
 
+  // Sync activeTab if initialTab changes (e.g. from /dashboard/billing to /dashboard/products)
+  React.useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
+
   // New ticket modal
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [ticketSubject, setTicketSubject] = useState('');

@@ -41,120 +41,138 @@ const AppContent: React.FC = () => {
 
   // Route switcher
   const renderCurrentView = () => {
+    // Clean path of query parameters, hash fragments, and trailing slashes for robust matching
+    const rawPath = currentPath.split('?')[0].split('#')[0];
+    const cleanPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '') || '/';
+
     // 1. Home
-    if (currentPath === '/' || currentPath === '') {
+    if (cleanPath === '/' || cleanPath === '') {
       return <HomePage />;
     }
 
     // 2. Services Root
-    if (currentPath === '/services') {
+    if (cleanPath === '/services') {
       return <ServicesPage />;
     }
 
-    // 3. Service Detail Pages
-    if (currentPath.startsWith('/services/')) {
-      const slug = currentPath.replace('/services/', '');
+    // 3. Service Detail Pages (/services/:slug)
+    if (cleanPath.startsWith('/services/')) {
+      const slug = cleanPath.replace('/services/', '');
       return <ServiceDetailPage slug={slug} />;
     }
 
     // 4. Products Root
-    if (currentPath === '/products') {
+    if (cleanPath === '/products') {
       return <ProductsPage />;
     }
 
     // 5. Flagship FieldSure Dedicated Product Page
-    if (currentPath === '/products/fieldsure') {
+    if (cleanPath === '/products/fieldsure') {
       return <FieldSurePage />;
     }
 
     // 6. Generic Product Detail Pages (/products/:slug)
-    if (currentPath.startsWith('/products/')) {
-      const slug = currentPath.replace('/products/', '');
+    if (cleanPath.startsWith('/products/')) {
+      const slug = cleanPath.replace('/products/', '');
       return <ProductDetailPage slug={slug} />;
     }
 
     // 7. Interactive Live Demos Hub
-    if (currentPath === '/demo' || currentPath === '/demos') {
+    if (cleanPath === '/demo' || cleanPath === '/demos') {
       return <LiveDemoHubPage />;
     }
 
     // 8. Interactive Live Sandbox Product Demos (/demo/:slug or /demos/:slug)
-    if (currentPath.startsWith('/demo/')) {
-      const slug = currentPath.replace('/demo/', '');
+    if (cleanPath.startsWith('/demo/')) {
+      const slug = cleanPath.replace('/demo/', '');
       return <LiveProductDemoPage slug={slug} />;
     }
-    if (currentPath.startsWith('/demos/')) {
-      const slug = currentPath.replace('/demos/', '');
+    if (cleanPath.startsWith('/demos/')) {
+      const slug = cleanPath.replace('/demos/', '');
       return <LiveProductDemoPage slug={slug} />;
     }
 
-    // 9. Client & Customer Portal Dashboard
+    // 9. Client & Customer Portal Dashboard (including /dashboard/billing, /dashboard/products, etc.)
     if (
-      currentPath === '/dashboard' ||
-      currentPath === '/client-portal' ||
-      currentPath === '/portal' ||
-      currentPath === '/customer-dashboard'
+      cleanPath === '/dashboard' ||
+      cleanPath.startsWith('/dashboard/') ||
+      cleanPath === '/client-portal' ||
+      cleanPath === '/portal' ||
+      cleanPath === '/customer-dashboard'
     ) {
-      return <CustomerDashboardPage />;
+      let initialTab: 'overview' | 'products' | 'subscriptions' | 'billing' | 'support' | 'profile' = 'overview';
+      if (cleanPath === '/dashboard/products') initialTab = 'products';
+      else if (cleanPath === '/dashboard/subscriptions') initialTab = 'subscriptions';
+      else if (cleanPath === '/dashboard/billing') initialTab = 'billing';
+      else if (cleanPath === '/dashboard/support') initialTab = 'support';
+      else if (cleanPath === '/dashboard/profile') initialTab = 'profile';
+
+      return <CustomerDashboardPage initialTab={initialTab} />;
     }
 
     // 10. Client & Customer Authentication (Login / Signup)
     if (
-      currentPath === '/login' ||
-      currentPath === '/auth' ||
-      currentPath === '/signin' ||
-      currentPath === '/signup' ||
-      currentPath === '/client-login' ||
-      currentPath === '/customer-login'
+      cleanPath === '/login' ||
+      cleanPath === '/auth' ||
+      cleanPath === '/signin' ||
+      cleanPath === '/signup' ||
+      cleanPath === '/client-login' ||
+      cleanPath === '/customer-login'
     ) {
       return <CustomerAuthPage />;
     }
 
     // 11. SaaS Free Trial Provisioning
-    if (currentPath === '/free-trial' || currentPath === '/trial') {
+    if (cleanPath === '/free-trial' || cleanPath === '/trial') {
       return <FreeTrialPage />;
     }
 
     // 12. Checkout & Subscriptions
-    if (currentPath === '/checkout') {
+    if (cleanPath === '/checkout') {
       return <CheckoutPage />;
     }
 
     // 13. Downloads & Product Demos APK Center
-    if (currentPath === '/downloads') {
+    if (
+      cleanPath === '/downloads' ||
+      cleanPath === '/download' ||
+      cleanPath === '/apk' ||
+      cleanPath === '/apks' ||
+      cleanPath === '/app-downloads'
+    ) {
       return <DownloadsPage />;
     }
 
     // 14. Portfolio / Work
-    if (currentPath === '/work' || currentPath === '/portfolio') {
+    if (cleanPath === '/work' || cleanPath === '/portfolio') {
       return <WorkPage />;
     }
 
     // 15. About Company
-    if (currentPath === '/about') {
+    if (cleanPath === '/about') {
       return <AboutPage />;
     }
 
     // 16. Contact & Enquiries
-    if (currentPath === '/contact') {
+    if (cleanPath === '/contact') {
       return <ContactPage />;
     }
 
     // 17. Pricing & Packages
-    if (currentPath === '/pricing') {
+    if (cleanPath === '/pricing') {
       return <PricingPage />;
     }
 
     // 18. Admin Portal
-    if (currentPath === '/admin') {
+    if (cleanPath === '/admin') {
       return <AdminPage />;
     }
 
     // 19. Legal Pages
-    if (currentPath === '/privacy-policy') {
+    if (cleanPath === '/privacy-policy') {
       return <PrivacyPolicyPage />;
     }
-    if (currentPath === '/terms') {
+    if (cleanPath === '/terms') {
       return <TermsPage />;
     }
 
@@ -163,7 +181,9 @@ const AppContent: React.FC = () => {
   };
 
   // If on admin route, render full Admin portal layout cleanly
-  const isAdminRoute = currentPath === '/admin';
+  const rawPath = currentPath.split('?')[0].split('#')[0];
+  const cleanPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '') || '/';
+  const isAdminRoute = cleanPath === '/admin';
 
   return (
     <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">

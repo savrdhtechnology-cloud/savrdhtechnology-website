@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import { PricingPackage } from '../types';
 
 interface NavigationContextType {
   currentPath: string;
+  searchParams: URLSearchParams;
   navigate: (path: string) => void;
   openLoginModal: boolean;
   setOpenLoginModal: (open: boolean) => void;
@@ -20,17 +21,21 @@ interface NavigationContextType {
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
 export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Normalize initial pathname
+  // Normalize initial pathname including search query
   const getNormalizedPath = (): string => {
     let p = window.location.pathname;
-    if (p.endsWith('/') && p.length > 1) {
-      p = p.slice(0, -1);
-    }
-    // Also check hash for SPA fallback if needed
+    const search = window.location.search;
+    
+    // Hash-based routing support
     if (window.location.hash.startsWith('#/')) {
       return window.location.hash.substring(1);
     }
-    return p || '/';
+    
+    if (p.endsWith('/') && p.length > 1) {
+      p = p.slice(0, -1);
+    }
+    
+    return `${p || '/'}${search}`;
   };
 
   const [currentPath, setCurrentPath] = useState<string>(getNormalizedPath);
@@ -39,6 +44,12 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
   const [openProjectModal, setOpenProjectModal] = useState<boolean>(false);
   const [openBookingModal, setOpenBookingModal] = useState<boolean>(false);
   const [selectedBookingPackage, setSelectedBookingPackage] = useState<PricingPackage | null>(null);
+
+  // Compute searchParams dynamically from currentPath or window.location
+  const searchParams = useMemo(() => {
+    const queryString = currentPath.includes('?') ? currentPath.split('?')[1] : window.location.search.replace(/^\?/, '');
+    return new URLSearchParams(queryString);
+  }, [currentPath]);
 
   const openPackageBooking = (pkg?: PricingPackage | null) => {
     if (pkg) {
@@ -65,15 +76,20 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    window.history.pushState({}, '', path);
+    try {
+      window.history.pushState({}, '', path);
+    } catch {
+      // Handle sandboxed iframe restrictions gracefully
+    }
     setCurrentPath(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   return (
     <NavigationContext.Provider
       value={{
         currentPath,
+        searchParams,
         navigate,
         openLoginModal,
         setOpenLoginModal,
@@ -93,7 +109,6 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
   );
 };
 
-
 export const useNavigation = () => {
   const context = useContext(NavigationContext);
   if (!context) {
@@ -101,3 +116,4 @@ export const useNavigation = () => {
   }
   return context;
 };
+
