@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/products/intelsight",
+      "destination": "https://savrdh-intelsight.vercel.app/app",
+      "permanent": false
+    },
+    {
+      "source": "/intelsight",
+      "destination": "https://savrdh-intelsight.vercel.app/app",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
